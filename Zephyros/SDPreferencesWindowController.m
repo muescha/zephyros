@@ -172,6 +172,12 @@
 
 // migrating configs
 
+- (IBAction) migrate3xConfigs:(id)sender {
+    [self willChangeValueForKey:@"watchedPathsHasChanges"];
+    [self setValue:[self newBashCommandString] forKeyPath:@"defaults.values.launchCommand"];
+    [self didChangeValueForKey:@"watchedPathsHasChanges"];
+}
+
 - (NSString*) newBashCommandString {
     NSString* zephjs = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:@"Contents/MacOS/zephjs"];
     NSString* config = @"~/.zephyros.js";
