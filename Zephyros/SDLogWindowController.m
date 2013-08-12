@@ -54,6 +54,8 @@
     
     NSArray* jsonCmd = [NSJSONSerialization JSONObjectWithData:[command dataUsingEncoding:NSUTF8StringEncoding] options:0 error:NULL];
     
+    [self log:command type:SDLogMessageTypeREPL];
+    
     [self.replClient handleRequest:jsonCmd];
     
     [self.replHistory addObject:command];
