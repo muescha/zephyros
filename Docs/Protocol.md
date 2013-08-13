@@ -15,9 +15,18 @@
     * This identifier should be sent as the receiver for method calls to this object
     * Each resource is garbage-collected by Zephyros after 30 seconds
 
-### Experimenting with the protocol
+### ZEPL: Experimenting with the protocol
 
-You can use `zepl` to send JSON to Zephyros, and see all responses. (It's nicer with `rlwrap`, found in homebrew.)
+You can use `zepl` to send JSON to Zephyros, and see all responses. 
+
+```bash
+$ /Applications/Zephyros.app/Contents/Resources/libs/zepl/zepl
+-> [0, null, "alert", "hello world", 2]
+<- [0,null]
+->
+```
+
+But it's nicer with `rlwrap`, install it with homebrew: `brew install rlwrap`.
 
 ```bash
 $ rlwrap /Applications/Zephyros.app/Contents/Resources/libs/zepl/zepl
@@ -27,6 +36,7 @@ $ rlwrap /Applications/Zephyros.app/Contents/Resources/libs/zepl/zepl
 ```
 
 It might be easier if `zepl` was a Homebrew package. But one of their rules is that authors shouldn't submit their own tools, someone else has to. Maybe that someone is you? :)
+
 
 ### Pseudo-sync
 
