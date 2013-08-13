@@ -20,7 +20,9 @@
 
 void fsEventsCallback(ConstFSEventStreamRef streamRef, void *clientCallBackInfo, size_t numEvents, void *eventPaths, const FSEventStreamEventFlags eventFlags[], const FSEventStreamEventId eventIds[])
 {
-    [[SDConfigLauncher sharedConfigLauncher] launchConfigMaybe];
+    SDConfigLauncher* launcher = [SDConfigLauncher sharedConfigLauncher];
+    [SDConfigLauncher cancelPreviousPerformRequestsWithTarget:launcher selector:@selector(somePathChanged:) object:nil];
+    [launcher performSelector:@selector(somePathChanged:) withObject:nil afterDelay:0.2];
 }
 
 

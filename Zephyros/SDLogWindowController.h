@@ -10,13 +10,10 @@
 
 #define SDLogMessageTypeError @"SDLogMessageTypeError"
 #define SDLogMessageTypeUser @"SDLogMessageTypeUser"
-#define SDLogMessageTypeREPL @"SDLogMessageTypeREPL"
 #define SDLogMessageTypeRequest @"SDLogMessageTypeRequest"
 #define SDLogMessageTypeResponse @"SDLogMessageTypeResponse"
 
-#import "SDClient.h"
-
-@interface SDLogWindowController : NSWindowController <NSWindowDelegate, SDClientDelegate>
+@interface SDLogWindowController : NSWindowController <NSWindowDelegate>
 
 + (SDLogWindowController*) sharedLogWindowController;
 

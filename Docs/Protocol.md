@@ -48,6 +48,8 @@ all_screens        |                                     | [[screen_id](#screen)
 running_apps       |                                     | [[app_id](#app), ...]
 alert              | msg, duration_sec                   |
 log                | msg                                 |
+show_box           | msg                                 |
+hide_box           |                                     |
 choose_from        | list, title, lines_tall, chars_wide | 0, followed by: chosen index or nil if canceled
 update_settings    | map of strings to values            |
 
@@ -117,3 +119,4 @@ app_died            | [[app_id](#app)]
 app_hidden          | [[app_id](#app)]
 app_shown           | [[app_id](#app)]
 screens_changed     | []
+mouse_moved         | [{x: number, y: number, deltaX: number, deltaY: number, dragged: bool [, whichButton: int] }] where whichButton is only there when you drag, and is one of [-1, 0, 1] representing [left, middle, right]

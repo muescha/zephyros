@@ -19,6 +19,7 @@
 
 #import "SDAlertWindowController.h"
 #import "SDClientListener.h"
+#import "SDMouseFollower.h"
 
 
 @interface AppDelegate ()
@@ -39,8 +40,7 @@
                                                           firstTime = NO;
                                                       }
                                                       else {
-                                                          [[SDAlertWindowController sharedAlertWindowController] show:@"Launched Zephyros Script"
-                                                                                                                delay:nil];
+                                                          [[SDAlerts sharedAlerts] show:@"Launched Zephyros Script"];
                                                       }
                                                   }];
     
@@ -48,8 +48,7 @@
                                                       object:nil
                                                        queue:nil
                                                   usingBlock:^(NSNotification *note) {
-                                                      [[SDAlertWindowController sharedAlertWindowController] show:@"Zephyros Script Ended"
-                                                                                                            delay:nil];
+                                                      [[SDAlerts sharedAlerts] show:@"Zephyros Script Ended"];
                                                   }];
     
     [[SDClientListener sharedListener] startListening];
@@ -59,6 +58,10 @@
     self.statusItem.alternateImage = [NSImage imageNamed:@"statusitem_pressed"];
     self.statusItem.menu = self.statusItemMenu;
     self.statusItem.highlightMode = YES;
+}
+
+- (void) applicationWillTerminate:(NSNotification *)notification {
+    [[SDConfigLauncher sharedConfigLauncher] unlaunch];
 }
 
 - (IBAction) accidentally93mb:(id)sender {
@@ -85,8 +88,8 @@
     [[SDConfigLauncher sharedConfigLauncher] launchConfigMaybe];
     [[SDAppStalker sharedAppStalker] beginStalking];
     
-    [[SDAlertWindowController sharedAlertWindowController] show:@"Zephyros power, activate!"
-                                                          delay:@1.5];
+    [[SDAlerts sharedAlerts] show:@"Zephyros power, activate!"
+                         duration:1.5];
 }
 
 - (IBAction) showPreferencesWindow:(id)sender {

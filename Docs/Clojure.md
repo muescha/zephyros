@@ -45,6 +45,7 @@ lein exec path/to/my-zeph.clj
   ;; 'app_hidden' args: [app]
   ;; 'app_shown' args: [app]
   ;; 'screens_changed' args: []
+  ;; 'mouse_moved' args: [movement]
 
 (defn unbind [key mods])
 
@@ -58,6 +59,9 @@ lein exec path/to/my-zeph.clj
 (defn get-all-screens [])
 
 (defn get-running-apps [])
+
+(defn show-box [msg])
+(defn hide-box [])
 
 (defn alert [msg duration])
 (defn log [msg])

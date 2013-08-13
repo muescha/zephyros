@@ -36,6 +36,9 @@ class API
     def log(str); end
     def alert(msg, duration=2); end
 
+    def show_box(str); end
+    def hide_box; end
+
     def update_settings(s); # hash with key 'alert_should_animate' (bool) and/or 'alert_default_delay' (number)
 
     def clipboard_contents; end
@@ -64,6 +67,7 @@ class API
         # 'app_hidden', callback args: (app)
         # 'app_shown', callback args: (app)
         # 'screens_changed', callback args: ()
+        # 'mouse_moved', callback args: (movement)
 
   end
 

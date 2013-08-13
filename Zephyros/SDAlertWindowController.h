@@ -8,13 +8,14 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface SDAlertWindowController : NSWindowController
+@interface SDAlerts : NSObject
 
-+ (SDAlertWindowController*) sharedAlertWindowController;
++ (SDAlerts*) sharedAlerts;
 
-- (void) show:(NSString*)oneLineMsg delay:(NSNumber*)delay;
+- (void) show:(NSString*)oneLineMsg;
+- (void) show:(NSString*)oneLineMsg duration:(CGFloat)duration;
 
 @property CGFloat alertDisappearDelay;
-- (void) setAlertAnimates:(BOOL)alertAnimates;
+@property BOOL alertAnimates;
 
 @end

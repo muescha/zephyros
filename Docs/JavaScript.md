@@ -36,8 +36,11 @@ property (API) api
 - (Rect) SDInsetRect(r, byX, byY) # => modifies and returns r
 - (Rect) SDIntegralRect(r)        # => modifies and returns r
 
+- (void) showBox(String str)
+- (void) hideBox()
+
 - (void) log(String str)                   # shows up in the log window
-- (void) alert(String str[, Number delay])  # shows in a fancy alert; optional delay is seconds
+- (void) alert(String str[, Number delay]) # shows in a fancy alert; optional delay is seconds
 
 - (void) bind(String key,              # case-insensitive single-character string; see link below
               Array<String> modifiers, # may contain any number of: "cmd", "ctrl", "alt", "shift"
@@ -183,4 +186,5 @@ The rest you'll have to look up for yourself.
 'app_hidden', callback args: (app)
 'app_shown', callback args: (app)
 'screens_changed', callback args: ()
+'mouse_moved', callback args: (movement)
 ```

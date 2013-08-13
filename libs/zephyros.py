@@ -29,23 +29,28 @@ class ZephClient(object):
         run_in_background(self.dispatch_individual_messages_forever)
 
     def read_forever(self):
-        while True:
-            len_str = ''
+        try:
             while True:
-                in_str = self.sock.recv(1)
-                if in_str == '\n':
-                     break
-                len_str += in_str
+                len_str = ''
+                while True:
+                    in_str = self.sock.recv(1)
+                    if in_str == '\n':
+                        break
+                    if in_str == '':
+                        raise RuntimeError("socket connection broken")
+                    len_str += in_str
 
-            len_num = int(len_str)
-            data = ''
-            while len(data) < len_num:
-                new_data = self.sock.recv(len_num)
-                len_num -= len(new_data)
-                data += new_data
+                len_num = int(len_str)
+                data = ''
+                while len(data) < len_num:
+                    new_data = self.sock.recv(len_num)
+                    len_num -= len(new_data)
+                    data += new_data
 
-            obj = json.loads(data)
-            self.raw_message_queue.put(obj)
+                obj = json.loads(data)
+                self.raw_message_queue.put(obj)
+        except RuntimeError:
+            pass
 
     def send_data_fully(self):
         while True:
@@ -174,6 +179,8 @@ class App(Proxy):
 class Api(Proxy):
     def alert(self, msg, duration=None): self._send_sync('alert', msg, duration)
     def log(self, msg): self._send_sync('log', msg)
+    def show_box(self, msg): self._send_sync('show_box', msg)
+    def hide_box(self): self._send_sync('hide_box')
     def unbind(self, key, mods): self._send_sync('unbind', key, mods)
     def update_settings(self, new_settings): self._send_sync('update_settings', new_settings)
     def relaunch_config(self): self._send_sync('relaunch_config')
@@ -186,9 +193,9 @@ class Api(Proxy):
     def running_apps(self): return [App(x) for x in  self._send_sync('running_apps')]
     def bind(self, key, mods, fn):
         def tmp_fn(obj): fn()
-        zeph.send_message([0, 'bind', key, mods], callback=tmp_fn)
+        zeph.send_message([self.id, 'bind', key, mods], callback=tmp_fn)
     def choose_from(self, lst, title, lines, chars, fn):
-        zeph.send_message([0, 'choose_from', lst, title, lines, chars], callback=fn, infinite=False)
+        zeph.send_message([self.id, 'choose_from', lst, title, lines, chars], callback=fn, infinite=False)
     def listen(self, event, fn):
         def tmp_fn(obj):
             if event == "window_created":       fn(Window(obj))
@@ -201,6 +208,7 @@ class Api(Proxy):
             elif event == "app_hidden":         fn(App(obj))
             elif event == "app_shown":          fn(App(obj))
             elif event == "screens_changed":    fn()
-        zeph.send_message([0, 'listen', event], callback=tmp_fn)
+            elif event == "mouse_moved":        fn(obj)
+        zeph.send_message([self.id, 'listen', event], callback=tmp_fn)
 
 api = Api(None)

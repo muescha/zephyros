@@ -173,9 +173,13 @@
 // migrating configs
 
 - (IBAction) migrate3xConfigs:(id)sender {
-    [self willChangeValueForKey:@"watchedPathsHasChanges"];
-    [self setValue:[self newBashCommandString] forKeyPath:@"defaults.values.launchCommand"];
-    [self didChangeValueForKey:@"watchedPathsHasChanges"];
+    NSInteger result = NSRunAlertPanel(@"Migrate 3.x configs", @"This will change what's in the \"Bash Command\" field above the button. Are you sure?", @"Wait, no!", @"Just do it already", nil);
+    
+    if (result == 0) {
+        [self willChangeValueForKey:@"watchedPathsHasChanges"];
+        [self setValue:[self newBashCommandString] forKeyPath:@"defaults.values.launchCommand"];
+        [self didChangeValueForKey:@"watchedPathsHasChanges"];
+    }
 }
 
 - (NSString*) newBashCommandString {

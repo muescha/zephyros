@@ -12,17 +12,41 @@
 
 #import "SDConfigLauncher.h"
 
+
+
+@interface SDLogTypeTransformer : NSValueTransformer
+@end
+@implementation SDLogTypeTransformer
++ (Class)transformedValueClass { return [NSImage self]; }
++ (BOOL)allowsReverseTransformation { return NO; }
+- (id)transformedValue:(id)value {
+    if ([value isEqual:SDLogMessageTypeError])
+        return [NSImage imageNamed:NSImageNameStatusUnavailable];
+    if ([value isEqual:SDLogMessageTypeUser])
+        return [NSImage imageNamed:NSImageNameStatusPartiallyAvailable];
+    if ([value isEqual:SDLogMessageTypeRequest])
+        return [NSImage imageNamed:NSImageNameStatusNone];
+    if ([value isEqual:SDLogMessageTypeResponse])
+        return [NSImage imageNamed:NSImageNameStatusAvailable];
+    return nil;
+}
+@end
+
+
+
+@interface SDLog : NSObject
+@property NSString* type;
+@property NSString* time;
+@property NSString* json;
+@end
+@implementation SDLog
+@end
+
+
 @interface SDLogWindowController ()
 
-@property IBOutlet NSTextField* replTextField;
-@property NSMutableArray* replHistory;
-@property NSInteger replHistoryPos;
-
-@property IBOutlet WebView* webView;
-@property (copy) dispatch_block_t beforeReady;
-@property BOOL ready;
-
-@property SDClient* replClient;
+@property IBOutlet NSTableView* logTableView;
+@property NSMutableArray* logs;
 
 @end
 
@@ -33,6 +57,7 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         sharedMessageWindowController = [[SDLogWindowController alloc] init];
+        sharedMessageWindowController.logs = [NSMutableArray array];
     });
     return sharedMessageWindowController;
 }
@@ -41,129 +66,52 @@
     return @"LogWindow";
 }
 
-- (void) sendResponse:(id)msg {
-    NSData* strData = [NSJSONSerialization dataWithJSONObject:msg options:0 error:NULL];
-    NSString* str = [[NSString alloc] initWithData:strData encoding:NSUTF8StringEncoding];
-    
-    [self show:str type:SDLogMessageTypeREPL];
-    [self.replTextField setStringValue:@""];
-}
-
-- (IBAction) evalFromRepl:(id)sender {
-    NSString* command = [sender stringValue];
-    
-    NSArray* jsonCmd = [NSJSONSerialization JSONObjectWithData:[command dataUsingEncoding:NSUTF8StringEncoding] options:0 error:NULL];
-    
-    [self log:command type:SDLogMessageTypeREPL];
-    
-    [self.replClient handleRequest:jsonCmd];
-    
-    [self.replHistory addObject:command];
-    self.replHistoryPos = [self.replHistory count];
-}
-
 - (IBAction) clearLog:(id)sender {
-    DOMDocument* doc = [self.webView mainFrameDocument];
-    [doc body].innerHTML = @"";
-}
-
-- (void)webView:(WebView *)sender didFinishLoadForFrame:(WebFrame *)frame {
-    self.ready = YES;
-    
-    if (self.beforeReady) {
-        self.beforeReady();
-        self.beforeReady = nil;
-    }
-}
-
-- (void) showCurrentReplHistoryItem {
-    NSString* str = @"";
-    
-    if (self.replHistoryPos < [self.replHistory count])
-        str = [self.replHistory objectAtIndex:self.replHistoryPos];
-    
-    [self.replTextField setStringValue:str];
-    NSText* fieldEditor = [[self.replTextField window] fieldEditor:YES forObject:self.replTextField];
-    [fieldEditor moveToEndOfLine:self];
-}
-
-- (BOOL)control:(NSControl *)control textView:(NSTextView *)textView doCommandBySelector:(SEL)command {
-    if (command == @selector(moveUp:)) {
-        // move LOWER in list
-        self.replHistoryPos = MAX(self.replHistoryPos - 1, 0);
-        [self showCurrentReplHistoryItem];
-        return YES;
-    }
-    else if (command == @selector(moveDown:)) {
-        // move HIGHER in list
-        self.replHistoryPos = MIN(self.replHistoryPos + 1, [self.replHistory count]);
-        [self showCurrentReplHistoryItem];
-        return YES;
-    }
-    return NO;
-}
-
-- (void) keyDown:(NSEvent *)theEvent {
-    NSLog(@"key down! %@", theEvent);
+    [self willChangeValueForKey:@"logs"];
+    [self.logs removeAllObjects];
+    [self didChangeValueForKey:@"logs"];
 }
 
 //- (void) windowDidBecomeKey:(NSNotification *)notification {
 //    self.window.level = NSNormalWindowLevel;
 //}
 
+- (CGFloat)tableView:(NSTableView *)tableView heightOfRow:(NSInteger)row {
+    SDLog* log = [self.logs objectAtIndex:row];
+    NSArray* lines = [log.json componentsSeparatedByString:@"\n"];
+    NSUInteger numRows = MAX(1, [lines count] - 1);
+    CGFloat normalHeight = [tableView rowHeight];
+    return normalHeight * (CGFloat)numRows;
+}
+
 - (void) windowDidLoad {
-    self.replClient = [[SDClient alloc] init];
-    self.replClient.delegate = self;
-    
     self.window.level = NSFloatingWindowLevel;
-    
-    self.replHistory = [NSMutableArray array];
-    self.webView.frameLoadDelegate = self;
-    
-    NSURL* path = [[NSBundle mainBundle] URLForResource:@"logwindow" withExtension:@"html"];
-    NSString* html = [NSString stringWithContentsOfURL:path encoding:NSUTF8StringEncoding error:NULL];
-    [[self.webView mainFrame] loadHTMLString:html baseURL:[NSURL URLWithString:@""]];
-    
     [[self window] center];
 }
 
-- (void) doWhenReady:(dispatch_block_t)blk {
-    if (self.ready)
-        blk();
-    else
-        self.beforeReady = blk;
+- (void) log:(NSString*)message type:(NSString*)type {
+    SDLog* log = [[SDLog alloc] init];
+    
+    NSDateFormatter* stampFormatter = [[NSDateFormatter alloc] init];
+    stampFormatter.dateStyle = NSDateFormatterNoStyle;
+    stampFormatter.timeStyle = kCFDateFormatterMediumStyle;
+    
+    log.time = [stampFormatter stringFromDate:[NSDate date]];
+    log.json = message;
+    log.type = type;
+    
+    [self.logs addObject:log];
+    
+    [[self class] cancelPreviousPerformRequestsWithTarget:self selector:@selector(refreshLogs:) object:nil];
+    [self performSelector:@selector(refreshLogs:) withObject:nil afterDelay:0.1];
 }
 
-- (void) log:(NSString*)message type:(NSString*)type {
-    [self window]; // le sigh
+- (void) refreshLogs:(id)alwaysNil {
+    [self willChangeValueForKey:@"logs"];
+    [self didChangeValueForKey:@"logs"];
     
-    [self doWhenReady:^{
-        DOMDocument* doc = [self.webView mainFrameDocument];
-        
-        NSString* classname = [@{SDLogMessageTypeError: @"error",
-                               SDLogMessageTypeUser: @"user",
-                               SDLogMessageTypeREPL: @"repl",
-                               SDLogMessageTypeRequest: @"request",
-                               SDLogMessageTypeResponse: @"response"} objectForKey:type];
-        
-        NSDateFormatter* stampFormatter = [[NSDateFormatter alloc] init];
-        stampFormatter.dateStyle = NSDateFormatterNoStyle;
-        stampFormatter.timeStyle = kCFDateFormatterMediumStyle;
-        
-        DOMHTMLDivElement* div = (id)[doc createElement:@"div"];
-        div.className = classname;
-        [[doc body] appendChild:div];
-        
-        DOMHTMLElement* stamp = (id)[doc createElement:@"small"];
-        stamp.innerText = [stampFormatter stringFromDate:[NSDate date]];
-        [div appendChild:stamp];
-        
-        DOMHTMLParagraphElement* p = (id)[doc createElement:@"p"];
-        p.innerText = message;
-        [div appendChild:p];
-        
-        [[self.webView windowScriptObject] evaluateWebScript:@"window.scrollTo(0, document.body.scrollHeight);"];
-    }];
+    NSInteger lastRow = [self.logs count] - 1;
+    [self.logTableView scrollRowToVisible:lastRow];
 }
 
 - (void) show:(NSString*)message type:(NSString*)type {

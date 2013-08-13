@@ -94,6 +94,8 @@ class App(Proxy):
 class Api(Proxy):
     def alert(self, msg, duration=1)
     def log(self, msg)
+    def show_box(self, msg)
+    def hide_box(self)
     def relaunch_config(self)
     def clipboard_contents(self)
     def focused_window(self)
@@ -118,6 +120,7 @@ class Api(Proxy):
             elif event == "app_hidden":         fn(App(obj))
             elif event == "app_shown":          fn(App(obj))
             elif event == "screens_changed":    fn()
+            elif event == "mouse_moved":        fn(movement)
         zeph.send_message([0, 'listen', event], callback=tmp_fn)
 
 api = Api(0)

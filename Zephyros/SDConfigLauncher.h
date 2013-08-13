@@ -26,4 +26,6 @@
 
 @property (readonly) BOOL isRunning;
 
+- (void) somePathChanged:(id)alwaysNil;
+
 @end

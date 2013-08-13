@@ -122,6 +122,10 @@
   ([msg duration] (get-one-value top-level-obj "alert" msg duration)))
 
 (defn log [msg] (get-one-value top-level-obj "log" msg))
+
+(defn show-box [msg] (get-one-value top-level-obj "show_box" msg))
+(defn hide-box [] (get-one-value top-level-obj "hide_box"))
+
 (defn choose-from [list title f] (do-callback-once f top-level-obj "choose_from" list title 20 10))
 
 (defn relaunch-config [] (get-one-value top-level-obj "relaunch_config"))

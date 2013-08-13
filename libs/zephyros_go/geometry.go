@@ -18,3 +18,12 @@ type TopLeft struct {
 	X float64 `json:"x"`
 	Y float64 `json:"y"`
 }
+
+type MouseMovement struct {
+	X float64 `json:"x"`
+	Y float64 `json:"y"`
+	DeltaX float64 `json:"deltaX"`
+	DeltaY float64 `json:"deltaY"`
+	Dragged bool `json:"dragged"`
+	WhichButton int `json:"whichButton"`
+}

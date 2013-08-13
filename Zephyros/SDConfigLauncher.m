@@ -93,6 +93,12 @@
 
 
 
+- (void) somePathChanged:(id)alwaysNil {
+    [self launchConfigMaybe];
+}
+
+
+
 
 - (void) prelaunchMaybe {
     BOOL shouldPrelaunch = [[NSUserDefaults standardUserDefaults] boolForKey:SDRunCommandFirstDefaultsKey];

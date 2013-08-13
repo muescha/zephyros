@@ -10,6 +10,86 @@
 
 #import <QuartzCore/QuartzCore.h>
 
+
+
+
+@protocol SDAlertHoraMortisNostraeDelegate <NSObject>
+
+- (void) oraPro:(id)nobis;
+
+@end
+
+
+
+@interface SDAlertWindowController : NSWindowController
+
+- (void) show:(NSString*)oneLineMsg duration:(CGFloat)duration pushDownBy:(CGFloat)adjustment;
+
+@property (weak) id<SDAlertHoraMortisNostraeDelegate> delegate;
+
+@end
+
+
+
+
+
+@interface SDAlerts () <SDAlertHoraMortisNostraeDelegate>
+
+@property NSMutableArray* visibleAlerts;
+
+@end
+
+
+@implementation SDAlerts
+
++ (SDAlerts*) sharedAlerts {
+    static SDAlerts* sharedAlerts;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sharedAlerts = [[SDAlerts alloc] init];
+        sharedAlerts.alertDisappearDelay = 1.0;
+        sharedAlerts.visibleAlerts = [NSMutableArray array];
+    });
+    return sharedAlerts;
+}
+
+- (void) show:(NSString*)oneLineMsg {
+    [self show:oneLineMsg duration:self.alertDisappearDelay];
+}
+
+- (void) show:(NSString*)oneLineMsg duration:(CGFloat)duration {
+    CGFloat absoluteTop;
+    
+    if ([self.visibleAlerts count] == 0) {
+        NSScreen* currentScreen = [NSScreen mainScreen];
+        CGRect screenRect = [currentScreen frame];
+        absoluteTop = screenRect.size.height / 1.55; // pretty good spot
+    }
+    else {
+        SDAlertWindowController* ctrl = [self.visibleAlerts lastObject];
+        absoluteTop = NSMinY([[ctrl window] frame]) - 3.0;
+    }
+    
+    SDAlertWindowController* alert = [[SDAlertWindowController alloc] init];
+    alert.delegate = self;
+    [alert show:oneLineMsg duration:duration pushDownBy:absoluteTop];
+    [self.visibleAlerts addObject:alert];
+}
+
+- (void) oraPro:(id)nobis {
+    [self.visibleAlerts removeObject:nobis];
+}
+
+@end
+
+
+
+
+
+
+
+
+
 @interface SDAlertWindowController ()
 
 @property IBOutlet NSTextField* textField;
@@ -19,22 +99,8 @@
 
 @implementation SDAlertWindowController
 
-+ (SDAlertWindowController*) sharedAlertWindowController {
-    static SDAlertWindowController* sharedAlertWindowController;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        sharedAlertWindowController = [[SDAlertWindowController alloc] init];
-        sharedAlertWindowController.alertDisappearDelay = 1.0;
-    });
-    return sharedAlertWindowController;
-}
-
 - (NSString*) windowNibName {
     return @"AlertWindow";
-}
-
-- (void) setAlertAnimates:(BOOL)alertAnimates {
-    self.window.animationBehavior = (alertAnimates ? NSWindowAnimationBehaviorAlertPanel : NSWindowAnimationBehaviorNone);
 }
 
 - (void) windowDidLoad {
@@ -43,20 +109,12 @@
     self.window.opaque = NO;
     self.window.level = NSFloatingWindowLevel;
     self.window.ignoresMouseEvents = YES;
-    self.window.animationBehavior = NSWindowAnimationBehaviorAlertPanel;
+    self.window.animationBehavior = ([SDAlerts sharedAlerts].alertAnimates ? NSWindowAnimationBehaviorAlertPanel : NSWindowAnimationBehaviorNone);
 //    self.collectionBehavior = NSWindowCollectionBehaviorCanJoinAllSpaces | NSWindowCollectionBehaviorStationary;
 }
 
-- (void) show:(NSString*)oneLineMsg delay:(NSNumber*)delay {
-    if (delay == nil || delay == (id)[NSNull null])
-        delay = @(self.alertDisappearDelay);
-    
+- (void) show:(NSString*)oneLineMsg duration:(CGFloat)duration pushDownBy:(CGFloat)adjustment {
     NSDisableScreenUpdates();
-    
-    [[self class] cancelPreviousPerformRequestsWithTarget:self selector:@selector(fadeWindowOut) object:nil];
-    [[self class] cancelPreviousPerformRequestsWithTarget:self selector:@selector(closeAndResetWindow) object:nil];
-    
-    [self closeAndResetWindow];
     
     [NSAnimationContext beginGrouping];
     [[NSAnimationContext currentContext] setDuration:0.01];
@@ -64,13 +122,22 @@
     [NSAnimationContext endGrouping];
     
     [self useTitleAndResize:[oneLineMsg description]];
-    
-    [self.window center];
+    [self setFrameWithAdjustment:adjustment];
     [self showWindow:self];
-    
-    [self performSelector:@selector(fadeWindowOut) withObject:nil afterDelay:[delay doubleValue]];
+    [self performSelector:@selector(fadeWindowOut) withObject:nil afterDelay:duration];
     
     NSEnableScreenUpdates();
+}
+
+- (void) setFrameWithAdjustment:(CGFloat)pushDownBy {
+    NSScreen* currentScreen = [NSScreen mainScreen];
+    CGRect screenRect = [currentScreen frame];
+    CGRect winRect = [[self window] frame];
+    
+    winRect.origin.x = (screenRect.size.width / 2.0) - (winRect.size.width / 2.0);
+    winRect.origin.y = pushDownBy - winRect.size.height;
+    
+    [self.window setFrame:winRect display:NO];
 }
 
 - (void) fadeWindowOut {
@@ -85,6 +152,8 @@
 - (void) closeAndResetWindow {
     [[self window] orderOut:nil];
     [[self window] setAlphaValue:1.0];
+    
+    [self.delegate oraPro:self];
 }
 
 - (void) useTitleAndResize:(NSString*)title {

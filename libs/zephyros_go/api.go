@@ -38,6 +38,7 @@ func ChooseFrom(list []string, title string, linesTall int, charsWide int, fn fu
 //     'app_hidden' args: [app]
 //     'app_shown' args: [app]
 //     'screens_changed' args: []
+//     'mouse_moved' args: [mouseMovement]
 func Listen(event string, fn interface{}) {
 	fnValue := reflect.ValueOf(fn)
 	fnType := fnValue.Type()
@@ -72,6 +73,14 @@ func Unbind(key string, mods []string) {
 
 func Log(msg string) {
 	send(0, nil, false, "log", msg)
+}
+
+func ShowBox(msg string) {
+	send(0, nil, false, "show_box", msg)
+}
+
+func HideBox() {
+	send(0, nil, false, "hide_box")
 }
 
 // Value keys are "alert_should_animate" (bool) and/or "alert_default_delay" (number)

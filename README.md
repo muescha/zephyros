@@ -13,7 +13,7 @@
 
 *The OS X window manager for hackers*
 
-* Current version: **4.4.1**
+* Current version: **4.5**
 * Requires: OS X 10.8 and up
 * Download: get [.zip file](https://raw.github.com/sdegutis/zephyros/master/Builds/Zephyros-LATEST.app.tar.gz), unzip, right-click app, choose "Open"
 
@@ -23,39 +23,9 @@ At it's core, Zephyros just runs quietly in your menu bar, and listens for your 
 
 You typically write a script that binds global hot keys to do stuff, like moving or resizing windows.
 
-#### See it in action
-
-Screenshots don't really do Zephyros justice, so here's a screencast instead. (I had a fever when making it so pardon any slight incoherence.)
-
-[![screencast](Graphics/sshot.png)](https://www.dropbox.com/s/qrvtmxmrxq40l1b/zephcast.mov)
-
-#### Some languages you can use
-
-- [Using Clojure](Docs/Clojure.md)
-- [Using Ruby](Docs/Ruby.md)
-- [Using Python](Docs/Python.md)
-- [Using Go](Docs/Go.md)
-- [Using JavaScript](Docs/JavaScript.md)
-- [Using CoffeeScript](Docs/CoffeeScript.md)
-
-#### Want to add another language?
-
-You can script Zephyros from any language, using [this simple protocol](Docs/Protocol.md).
-
-These languages might be fun to write one in:
-
-- Scala
-- Haskell
-- Lua
-- Elixir
-- Rust
-- Racket
-- node.js (see [issue 17](../../issues/17))
-
-If you want to do one, please [open an issue](https://github.com/sdegutis/zephyros/issues/new) so we can coordinate. That way nobody does extra work.
-
 #### Stuff you can do
 
+- register for callbacks on global hotkeys
 - find the focused window
 - determine window sizes and positions
 - move and resize windows
@@ -67,12 +37,16 @@ If you want to do one, please [open an issue](https://github.com/sdegutis/zephyr
 - get free pizza (okay not really)
 - and more!
 
-Is the API missing something you need? File an issue and let me know!
+#### Some languages you can use
 
-#### Auto-reloading configs
+- [Using Clojure](Docs/Clojure.md)
+- [Using Ruby](Docs/Ruby.md)
+- [Using Python](Docs/Python.md)
+- [Using Go](Docs/Go.md)
+- [Using JavaScript](Docs/JavaScript.md)
+- [Using CoffeeScript](Docs/CoffeeScript.md)
 
-* Automatically reload your config file whenever it (or anything you choose) changes.
-* Bind a global hot key to reloading it.
+Don't see your favorite language here? See the [using other languages](#using-other-languages) section.
 
 ### Example Configs
 
@@ -166,6 +140,16 @@ bind("D", ["cmd", "shift"], function() {
 })
 ```
 
+#### Using other languages
+
+You can script Zephyros from nearly any language. Just write a client that talks to Zephyros using [this simple protocol](Docs/Protocol.md).
+
+Here's what people are working on:
+
+- node.js (see [issue 17](../../issues/17))
+
+If you want to do one, please [open an issue](https://github.com/sdegutis/zephyros/issues/new) so we can coordinate. That way nobody does extra work.
+
 #### More configs
 
 * [The author's config](https://github.com/sdegutis/dotfiles/blob/master/stuff/zeph.rb)
@@ -177,8 +161,16 @@ bind("D", ["cmd", "shift"], function() {
 
 ### Change log
 
-**NOTE:** This auto-updater won't work if you're on version 3.x or 2.x due to [this securty fix](https://github.com/sdegutis/zephyros/pull/21).<br>[Download Zephyros-4.3.zip](https://raw.github.com/sdegutis/zephyros/master/Builds/Zephyros-LATEST.app.tar.gz) directly instead.
+**NOTE:** This auto-updater won't work if you're on version 3.x or 2.x due to [this securty fix](https://github.com/sdegutis/zephyros/pull/21).<br>[Download Zephyros-4.5.zip](https://raw.github.com/sdegutis/zephyros/master/Builds/Zephyros-LATEST.app.tar.gz) directly instead.
 
+- 4.5
+    - Added `zepl` tool for communicating with Zephyros via plain JSON
+        - Use it with `rlwrap` (from homebrew) for best results
+    - Several UI improvements
+    - Added `show_box(str)` and `hide_box` to all APIs
+    - Added `mouse_moved` listenable-event
+    - Better API error-reporting
+    - Makes sure auto-launched process dies when Zephyros exits
 - 4.4.1
     - Ruby API handles UTF-8 strings properly
 - 4.4
@@ -227,7 +219,6 @@ bind("D", ["cmd", "shift"], function() {
 
 Are you good at stuff? We could use these things:
 
-* Better CSS styling in [the Log Window](Zephyros/logwindow.html)
 * Better app icon
 * Better menu bar icon
 
