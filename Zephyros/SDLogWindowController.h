@@ -8,16 +8,18 @@
 
 #import <Cocoa/Cocoa.h>
 
-#define SDLogMessageTypeError @"SDLogMessageTypeError"
-#define SDLogMessageTypeUser @"SDLogMessageTypeUser"
-#define SDLogMessageTypeRequest @"SDLogMessageTypeRequest"
-#define SDLogMessageTypeResponse @"SDLogMessageTypeResponse"
+typedef enum _SDLogMessageType {
+    SDLogMessageTypeError,
+    SDLogMessageTypeUser,
+    SDLogMessageTypeRequest,
+    SDLogMessageTypeResponse,
+} SDLogMessageType;
 
 @interface SDLogWindowController : NSWindowController <NSWindowDelegate>
 
 + (SDLogWindowController*) sharedLogWindowController;
 
-- (void) show:(NSString*)message type:(NSString*)type;
-- (void) log:(NSString*)message type:(NSString*)type;
+- (void) show:(NSString*)message type:(SDLogMessageType)type;
+- (void) log:(NSString*)message type:(SDLogMessageType)type;
 
 @end

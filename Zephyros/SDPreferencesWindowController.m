@@ -104,6 +104,7 @@
     self.scriptRunning = [SDConfigLauncher sharedConfigLauncher].isRunning;
     
     [[self window] center];
+    self.window.level = NSFloatingWindowLevel;
     [self showWindow:self];
 }
 

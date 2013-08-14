@@ -15,6 +15,19 @@
     * This identifier should be sent as the receiver for method calls to this object
     * Each resource is garbage-collected by Zephyros after 30 seconds
 
+### Experimenting with the protocol
+
+You can use `zepl` to send JSON to Zephyros, and see all responses. (It's nicer with `rlwrap`, found in homebrew.)
+
+```bash
+$ rlwrap /Applications/Zephyros.app/Contents/Resources/libs/zepl/zepl
+-> [0, null, "alert", "hello world", 2]
+<- [0,null]
+->
+```
+
+It might be easier if `zepl` was a Homebrew package. But one of their rules is that authors shouldn't submit their own tools, someone else has to. Maybe that someone is you? :)
+
 ### Pseudo-sync
 
 Technically the protocol is asynchronous, to allow for callbacks. But it's nicer to just write `win.title()` and have it return the title directly. The pseudo-sync trick solves this problem. This is the basic idea, using Ruby:

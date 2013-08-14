@@ -71,6 +71,7 @@
 		94E0964B171ED905002D8668 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94E0964A171ED905002D8668 /* Sparkle.framework */; };
 		94E0964C171ED9D6002D8668 /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 94E0964A171ED905002D8668 /* Sparkle.framework */; };
 		94E0964E171EDBA6002D8668 /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = 94E0964D171EDBA6002D8668 /* dsa_pub.pem */; };
+		94FC98E517BB3A05006142AC /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94FC98E417BB3A05006142AC /* IOKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -223,6 +224,7 @@
 		94E02EE717AB462A005AE3E8 /* SDInsetHorizontalLine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDInsetHorizontalLine.m; sourceTree = "<group>"; };
 		94E0964A171ED905002D8668 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sparkle.framework; path = ThirdParty/Sparkle.framework; sourceTree = "<group>"; };
 		94E0964D171EDBA6002D8668 /* dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = dsa_pub.pem; path = AutoUpdating/dsa_pub.pem; sourceTree = SOURCE_ROOT; };
+		94FC98E417BB3A05006142AC /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -230,6 +232,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				94FC98E517BB3A05006142AC /* IOKit.framework in Frameworks */,
 				9466562217AFA5EE00B68607 /* ApplicationServices.framework in Frameworks */,
 				94B255A517A9AF2A008CFD26 /* Security.framework in Frameworks */,
 				94454B3F171B479B003EF64E /* QuartzCore.framework in Frameworks */,
@@ -360,6 +363,7 @@
 		94873F2C17191F40000AC0A6 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				94FC98E417BB3A05006142AC /* IOKit.framework */,
 				9466562117AFA5EE00B68607 /* ApplicationServices.framework */,
 				9466561F17AFA58400B68607 /* HIToolbox.framework */,
 				94B255A417A9AF2A008CFD26 /* Security.framework */,

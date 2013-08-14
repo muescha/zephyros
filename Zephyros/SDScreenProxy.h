@@ -21,4 +21,6 @@
 - (SDScreenProxy*) nextScreen;
 - (SDScreenProxy*) previousScreen;
 
+- (BOOL) rotateTo:(int)degrees;
+
 @end

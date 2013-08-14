@@ -28,4 +28,10 @@
     return [self.receiver previousScreen];
 }
 
+- (id) rotate_to:(NSArray*)args msgID:(id)msgID {
+    SDTypeCheckArg(NSNumber, degrees, 0);
+    [self.receiver rotateTo: [degrees intValue]];
+    return nil;
+}
+
 @end

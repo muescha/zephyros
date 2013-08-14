@@ -20,13 +20,13 @@
 + (Class)transformedValueClass { return [NSImage self]; }
 + (BOOL)allowsReverseTransformation { return NO; }
 - (id)transformedValue:(id)value {
-    if ([value isEqual:SDLogMessageTypeError])
+    if ([value intValue] == SDLogMessageTypeError)
         return [NSImage imageNamed:NSImageNameStatusUnavailable];
-    if ([value isEqual:SDLogMessageTypeUser])
+    if ([value intValue] == SDLogMessageTypeUser)
         return [NSImage imageNamed:NSImageNameStatusPartiallyAvailable];
-    if ([value isEqual:SDLogMessageTypeRequest])
+    if ([value intValue] == SDLogMessageTypeRequest)
         return [NSImage imageNamed:NSImageNameStatusNone];
-    if ([value isEqual:SDLogMessageTypeResponse])
+    if ([value intValue] == SDLogMessageTypeResponse)
         return [NSImage imageNamed:NSImageNameStatusAvailable];
     return nil;
 }
@@ -35,9 +35,9 @@
 
 
 @interface SDLog : NSObject
-@property NSString* type;
-@property NSString* time;
-@property NSString* json;
+@property SDLogMessageType type;
+@property NSDate* time;
+@property NSString* message;
 @end
 @implementation SDLog
 @end
@@ -72,16 +72,42 @@
     [self didChangeValueForKey:@"logs"];
 }
 
-//- (void) windowDidBecomeKey:(NSNotification *)notification {
-//    self.window.level = NSNormalWindowLevel;
-//}
-
 - (CGFloat)tableView:(NSTableView *)tableView heightOfRow:(NSInteger)row {
     SDLog* log = [self.logs objectAtIndex:row];
-    NSArray* lines = [log.json componentsSeparatedByString:@"\n"];
+    NSArray* lines = [log.message componentsSeparatedByString:@"\n"];
     NSUInteger numRows = MAX(1, [lines count] - 1);
     CGFloat normalHeight = [tableView rowHeight];
     return normalHeight * (CGFloat)numRows;
+}
+
+- (IBAction) copy:(id)sender {
+    NSIndexSet* indices = [self.logTableView selectedRowIndexes];
+    NSArray* selectedLogs = [self.logs objectsAtIndexes:indices];
+    
+    NSDateFormatter* formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"HH:mm:ss"];
+    
+    NSMutableString* toCopy = [NSMutableString string];
+    
+    for (SDLog* log in selectedLogs) {
+        NSString* typeString;
+        
+        if (log.type == SDLogMessageTypeError)
+            typeString = @"ERR";
+        else if (log.type == SDLogMessageTypeRequest)
+            typeString = @"REQ";
+        else if (log.type == SDLogMessageTypeResponse)
+            typeString = @"RSP";
+        else if (log.type == SDLogMessageTypeUser)
+            typeString = @"USR";
+        
+        [toCopy appendFormat:@"%@ - %@ - %@\n", typeString, [formatter stringFromDate:log.time], log.message];
+    }
+    
+    NSPasteboard* pasteBoard = [NSPasteboard generalPasteboard];
+    
+    [pasteBoard declareTypes:[NSArray arrayWithObject:NSStringPboardType] owner:nil];
+    [pasteBoard setString:toCopy forType:NSStringPboardType];
 }
 
 - (void) windowDidLoad {
@@ -89,16 +115,12 @@
     [[self window] center];
 }
 
-- (void) log:(NSString*)message type:(NSString*)type {
+- (void) log:(NSString*)message type:(SDLogMessageType)type {
     SDLog* log = [[SDLog alloc] init];
     
-    NSDateFormatter* stampFormatter = [[NSDateFormatter alloc] init];
-    stampFormatter.dateStyle = NSDateFormatterNoStyle;
-    stampFormatter.timeStyle = kCFDateFormatterMediumStyle;
-    
-    log.time = [stampFormatter stringFromDate:[NSDate date]];
-    log.json = message;
+    log.time = [NSDate date];
     log.type = type;
+    log.message = message;
     
     [self.logs addObject:log];
     
@@ -114,7 +136,7 @@
     [self.logTableView scrollRowToVisible:lastRow];
 }
 
-- (void) show:(NSString*)message type:(NSString*)type {
+- (void) show:(NSString*)message type:(SDLogMessageType)type {
     if (!self.window.isVisible) {
         [self showWindow:nil];
     }

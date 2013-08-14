@@ -43,7 +43,7 @@ class API
 
     def clipboard_contents; end
 
-    def choose_from(list, title, &blk); end
+    def choose_from(list, title, lines_tall, chars_wide, &blk); end
         # takes list of strings
         # blk gets index of chosen string, or nil of canceled
 

@@ -36,6 +36,10 @@ You typically write a script that binds global hot keys to do stuff, like moving
 - open apps, links, or files
 - get free pizza (okay not really)
 - and more!
+ 
+#### API
+
+All languages use the same [API](Docs/Protocol.md).
 
 #### Some languages you can use
 
@@ -142,7 +146,7 @@ bind("D", ["cmd", "shift"], function() {
 
 #### Using other languages
 
-You can script Zephyros from nearly any language. Just write a client that talks to Zephyros using [this simple protocol](Docs/Protocol.md).
+You can script Zephyros from nearly any language. Just write a client that talks to Zephyros using [this simple protocol](#api).
 
 Here's what people are working on:
 
