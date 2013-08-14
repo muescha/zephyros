@@ -82,6 +82,7 @@
     if (recv == nil) {
         [self showAPIError:[NSString stringWithFormat:@"API Error: Could not find receiver with ID %@", recvID]];
         [self sendResponse:nil forID:msgID];
+        return;
     }
     
     SEL sel = NSSelectorFromString([[meth stringByReplacingOccurrencesOfString:@"?" withString:@"_q"] stringByAppendingString:@":msgID:"]);
@@ -89,6 +90,7 @@
     if (![recv respondsToSelector:sel]) {
         [self showAPIError:[NSString stringWithFormat:@"API Error: Could not find method %@.%@", [recv className], meth]];
         [self sendResponse:nil forID:msgID];
+        return;
     }
     
     dispatch_async(dispatch_get_main_queue(), ^{

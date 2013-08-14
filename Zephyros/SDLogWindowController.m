@@ -20,14 +20,10 @@
 + (Class)transformedValueClass { return [NSImage self]; }
 + (BOOL)allowsReverseTransformation { return NO; }
 - (id)transformedValue:(id)value {
-    if ([value intValue] == SDLogMessageTypeError)
-        return [NSImage imageNamed:NSImageNameStatusUnavailable];
-    if ([value intValue] == SDLogMessageTypeUser)
-        return [NSImage imageNamed:NSImageNameStatusPartiallyAvailable];
-    if ([value intValue] == SDLogMessageTypeRequest)
-        return [NSImage imageNamed:NSImageNameStatusNone];
-    if ([value intValue] == SDLogMessageTypeResponse)
-        return [NSImage imageNamed:NSImageNameStatusAvailable];
+    if ([value intValue] == SDLogMessageTypeError)    return [NSImage imageNamed:NSImageNameStatusUnavailable];
+    if ([value intValue] == SDLogMessageTypeUser)     return [NSImage imageNamed:NSImageNameUser];
+    if ([value intValue] == SDLogMessageTypeRequest)  return [NSImage imageNamed:NSImageNameRightFacingTriangleTemplate];
+    if ([value intValue] == SDLogMessageTypeResponse) return [NSImage imageNamed:NSImageNameLeftFacingTriangleTemplate];
     return nil;
 }
 @end
@@ -92,14 +88,10 @@
     for (SDLog* log in selectedLogs) {
         NSString* typeString;
         
-        if (log.type == SDLogMessageTypeError)
-            typeString = @"ERR";
-        else if (log.type == SDLogMessageTypeRequest)
-            typeString = @"REQ";
-        else if (log.type == SDLogMessageTypeResponse)
-            typeString = @"RSP";
-        else if (log.type == SDLogMessageTypeUser)
-            typeString = @"USR";
+        if (log.type == SDLogMessageTypeError)         typeString = @"ERR";
+        else if (log.type == SDLogMessageTypeRequest)  typeString = @"REQ";
+        else if (log.type == SDLogMessageTypeResponse) typeString = @"RSP";
+        else if (log.type == SDLogMessageTypeUser)     typeString = @"USR";
         
         [toCopy appendFormat:@"%@ - %@ - %@\n", typeString, [formatter stringFromDate:log.time], log.message];
     }

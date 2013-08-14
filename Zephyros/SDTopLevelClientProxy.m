@@ -120,7 +120,6 @@
 }
 
 - (id) relaunch_config:(NSArray*)args msgID:(id)msgID {
-    [[SDBoxWindowController sharedBox] hide];
     [[SDConfigLauncher sharedConfigLauncher] launchConfigMaybe];
     return nil;
 }

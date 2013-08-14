@@ -13,6 +13,7 @@
 
 #import "SDLogWindowController.h"
 #import "SDAlertWindowController.h"
+#import "SDBoxWindowController.h"
 
 #import "SDShellCommand.h"
 
@@ -40,6 +41,8 @@
 
 - (void) launchConfigMaybe {
     dispatch_async(dispatch_get_main_queue(), ^{
+        [[SDBoxWindowController sharedBox] hide];
+        
         NSString* cmd = [[NSUserDefaults standardUserDefaults] stringForKey:SDLaunchCommandDefaultsKey];
         BOOL shouldLaunchConfig = [[NSUserDefaults standardUserDefaults] boolForKey:SDRunMyScriptDefaultsKey] && [cmd length] > 0;
         
