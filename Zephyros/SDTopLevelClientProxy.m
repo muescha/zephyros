@@ -37,6 +37,10 @@
     return self;
 }
 
+- (void) delayDeath {
+    // no-op
+}
+
 - (void) destroy {
     for (SDHotKey* hotkey in self.hotkeys) {
         [hotkey unbind];

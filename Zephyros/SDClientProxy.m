@@ -12,6 +12,15 @@
 
 @implementation SDClientProxy
 
+- (void) delayDeath {
+    dispatch_group_enter(self.dieGroup);
+    double delayInSeconds = 60.0;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        dispatch_group_leave(self.dieGroup);
+    });
+}
+
 - (void) argumentError:(SEL)sel index:(int)idx wantedClass:(Class)klass got:(id)realArg {
     NSString* method = [NSStringFromSelector(sel) stringByReplacingOccurrencesOfString:@":msgID:" withString:@""];
     NSString* objectDesc = [self className];

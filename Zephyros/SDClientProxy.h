@@ -14,6 +14,9 @@
 
 @property (weak) SDClient* client;
 @property id receiver;
+@property dispatch_group_t dieGroup;
+
+- (void) delayDeath; // that's all it really is.
 
 - (void) argumentError:(SEL)sel index:(int)idx wantedClass:(Class)klass got:(id)realArg;
 - (void) arrayError:(SEL)sel index:(int)idx wantedClass:(Class)klass got:(id)realArg;

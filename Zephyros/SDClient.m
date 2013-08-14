@@ -77,6 +77,7 @@
     
     NSArray* args = [msg subarrayWithRange:NSMakeRange(3, [msg count] - 3)];
     SDClientProxy* recv = [self.returnedObjects objectForKey:recvID];
+    [recv delayDeath];
     
     if (recv == nil) {
         [self showAPIError:[NSString stringWithFormat:@"API Error: Could not find receiver with ID %@", recvID]];
@@ -118,9 +119,10 @@
     [self.returnedObjects setObject:wrappedObj
                              forKey:newMaxID];
     
-    double delayInSeconds = 30.0;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+    wrappedObj.dieGroup = dispatch_group_create();
+    [wrappedObj delayDeath];
+    
+    dispatch_group_notify(wrappedObj.dieGroup, dispatch_get_main_queue(), ^{
         [self.returnedObjects removeObjectForKey:newMaxID];
     });
     
@@ -155,7 +157,6 @@
 
 - (void) sendResponse:(id)result forID:(NSNumber*)msgID {
     [self.delegate sendResponse:@[msgID, [self convertObj:result]]];
-//    NSLog(@"%@", self.returnedObjects);
 }
 
 @end
