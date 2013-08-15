@@ -33,3 +33,8 @@ func (self Screen) PreviousScreen() Screen {
 	json.Unmarshal(bytes, &buf)
 	return buf
 }
+
+// Can only be 0, 90, 180, or 270
+func (self Screen) RotateTo(degrees int) {
+	send(float64(self), nil, false, "rotate_to", degrees)
+}

@@ -193,3 +193,5 @@
 
 (defn next-screen [screen] (get-one-value screen "next_screen"))
 (defn previous-screen [screen] (get-one-value screen "previous_screen"))
+
+(defn rotate-to [screen degrees] (get-one-value screen "rotate_to" degrees))

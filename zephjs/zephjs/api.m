@@ -43,6 +43,7 @@ NSString* sd_js_api() {
     "  frameIncludingDockAndMenu: -> SDZephJS.sharedZeph().sendSyncMessage([@proxy, 'frame_including_dock_and_menu'])\n"
     "  frameWithoutDockOrMenu: -> SDZephJS.sharedZeph().sendSyncMessage([@proxy, 'frame_without_dock_or_menu'])\n"
     "  nextScreen: -> Screen.fromNS SDZephJS.sharedZeph().sendSyncMessage([@proxy, 'next_screen'])\n"
+    "  rotateTo: (deg) -> SDZephJS.sharedZeph().sendSyncMessage([@proxy, 'rotate_to', deg])\n"
     "  previousScreen: -> Screen.fromNS SDZephJS.sharedZeph().sendSyncMessage([@proxy, 'previous_screen'])\n"
     "\n"
     "class App\n"

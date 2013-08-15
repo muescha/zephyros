@@ -13,7 +13,7 @@
 
 *The OS X window manager for hackers*
 
-* Current version: **4.5**
+* Current version: **4.5.1**
 * Requires: OS X 10.8 and up
 * Download: get [.zip file](https://raw.github.com/sdegutis/zephyros/master/Builds/Zephyros-LATEST.app.tar.gz), unzip, right-click app, choose "Open"
 
@@ -36,7 +36,7 @@ You typically write a script that binds global hot keys to do stuff, like moving
 - open apps, links, or files
 - get free pizza (okay not really)
 - and more!
- 
+
 #### API
 
 All languages use the same [API](Docs/Protocol.md).
@@ -167,6 +167,10 @@ If you want to do one, please [open an issue](https://github.com/sdegutis/zephyr
 
 **NOTE:** This auto-updater won't work if you're on version 3.x or 2.x due to [this securty fix](https://github.com/sdegutis/zephyros/pull/21).<br>[Download Zephyros-4.5.zip](https://raw.github.com/sdegutis/zephyros/master/Builds/Zephyros-LATEST.app.tar.gz) directly instead.
 
+- 4.5.1
+    - More resilient to script errors
+    - Added `screen.rotate_to` to all APIs
+    - Various fixes and improvements
 - 4.5
     - Added `zepl` tool for communicating with Zephyros via plain JSON
         - Use it with `rlwrap` (from homebrew) for best results

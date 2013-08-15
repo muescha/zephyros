@@ -165,6 +165,7 @@ class Screen(Proxy):
     def frame_without_dock_or_menu(self): return Rect(**self._send_sync("frame_without_dock_or_menu"))
     def previous_screen(self): return Screen(self._send_sync("previous_screen"))
     def next_screen(self): return Screen(self._send_sync("next_screen"))
+    def rotate_to(self, degrees): return self._send_sync("rotate_to", degrees)
 
 class App(Proxy):
     def visible_windows(self): return [Window(x) for x in  self._send_sync("visible_windows")]
