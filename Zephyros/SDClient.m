@@ -46,21 +46,16 @@
     [self.topLevel destroy];
 }
 
-- (void) showAPIError:(NSString*)errorStr {
-    [[SDLogWindowController sharedLogWindowController] show:errorStr
-                                                       type:SDLogMessageTypeError];
-}
-
 - (void) handleRequest:(NSArray*)msg {
     if ([msg count] < 3) {
-        [self showAPIError:[NSString stringWithFormat:@"API error: invalid message: %@", msg]];
+        SDLogError(@"API error: invalid message: %@", msg);
         return;
     }
     
     id msgID = [msg objectAtIndex:0];
     
     if ([msgID isEqual:[NSNull null]]) {
-        [self showAPIError:[NSString stringWithFormat:@"API error: invalid message id: %@", msgID]];
+        SDLogError(@"API error: invalid message id: %@", msgID);
         [self sendResponse:nil forID:msgID];
         return;
     }
@@ -70,7 +65,7 @@
     NSString* meth = [msg objectAtIndex:2];
     
     if (![meth isKindOfClass:[NSString self]] || [[meth stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length] == 0) {
-        [self showAPIError:[NSString stringWithFormat:@"API error: invalid method name: %@", meth]];
+        SDLogError(@"API error: invalid method name: %@", meth);
         [self sendResponse:nil forID:msgID];
         return;
     }
@@ -80,7 +75,7 @@
     [recv delayDeath];
     
     if (recv == nil) {
-        [self showAPIError:[NSString stringWithFormat:@"API Error: Could not find receiver with ID %@", recvID]];
+        SDLogError(@"API Error: Could not find receiver with ID %@", recvID);
         [self sendResponse:nil forID:msgID];
         return;
     }
@@ -88,7 +83,7 @@
     SEL sel = NSSelectorFromString([[meth stringByReplacingOccurrencesOfString:@"?" withString:@"_q"] stringByAppendingString:@":msgID:"]);
     
     if (![recv respondsToSelector:sel]) {
-        [self showAPIError:[NSString stringWithFormat:@"API Error: Could not find method %@.%@", [recv className], meth]];
+        SDLogError(@"API Error: Could not find method %@.%@", [recv className], meth);
         [self sendResponse:nil forID:msgID];
         return;
     }
@@ -102,7 +97,7 @@
             #pragma clang diagnostic pop // rocks aren't all they're cracked up to be
         }
         @catch (NSException *exception) {
-            [self showAPIError:[exception description]];
+            SDLogError([exception description]);
         }
         @finally {
             [self sendResponse:result forID:msgID];

@@ -18,35 +18,21 @@
 
 - (void) delayDeath; // that's all it really is.
 
-- (void) argumentError:(SEL)sel index:(int)idx wantedClass:(Class)klass got:(id)realArg;
-- (void) arrayError:(SEL)sel index:(int)idx wantedClass:(Class)klass got:(id)realArg;
+- (id) check:(NSArray*)args atIndex:(int)idx forType:(Class)klass inFn:(SEL)fn;
+- (NSArray*) check:(NSArray*)args atIndex:(int)idx forElementType:(Class)klass inFn:(SEL)fn;
 
 @end
-
-
 
 
 #define SDTypeCheckArg(klass, name, idx) \
 klass* name; \
 do { \
-    id arg = [args objectAtIndex:idx]; \
-    if (![arg isKindOfClass:[klass self]]) { \
-        [self argumentError:_cmd index:idx wantedClass:[klass self] got:arg]; \
-        return nil; \
-    } \
-    name = arg; \
+    if (!(name = [self check:args atIndex:idx forType:[klass self] inFn:_cmd])) return nil; \
 } while(0)
 
 
-
-#define SDTypeCheckArray(ary, klass) \
+#define SDTypeCheckArrayArg(name, elemklass, idx) \
+NSArray* name; \
 do { \
-    int idx = 0; \
-    for (id obj in ary) { \
-        if (![obj isKindOfClass:[klass self]]) { \
-            [self arrayError:_cmd index:idx wantedClass:[klass self] got:obj]; \
-            return nil; \
-        } \
-        idx++; \
-    } \
+if (!(name = [self check:args atIndex:idx forElementType:[elemklass self] inFn:_cmd])) return nil; \
 } while(0)

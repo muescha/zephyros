@@ -9,6 +9,7 @@
 #import "SDScreenClientProxy.h"
 
 #import "SDGeometry.h"
+#import "SDLogWindowController.h"
 
 @implementation SDScreenClientProxy
 
@@ -30,7 +31,15 @@
 
 - (id) rotate_to:(NSArray*)args msgID:(id)msgID {
     SDTypeCheckArg(NSNumber, degrees, 0);
-    [self.receiver rotateTo: [degrees intValue]];
+    
+    int deg = [degrees intValue];
+    if (deg == 0 || deg == 90 || deg == 180 || deg == 270) {
+        [self.receiver rotateTo: deg];
+    }
+    else {
+        SDLogError(@"Error: Rotation must be to either 0, 90, 180, or 270 degrees. Got: %d", deg);
+    }
+    
     return nil;
 }
 

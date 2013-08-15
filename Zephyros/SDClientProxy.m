@@ -21,29 +21,52 @@
     });
 }
 
-- (void) argumentError:(SEL)sel index:(int)idx wantedClass:(Class)klass got:(id)realArg {
-    NSString* method = [NSStringFromSelector(sel) stringByReplacingOccurrencesOfString:@":msgID:" withString:@""];
+- (id) check:(NSArray*)args atIndex:(int)idx forType:(Class)klass inFn:(SEL)fn {
+    id obj = [args objectAtIndex:idx];
+    
+    if ([obj isKindOfClass:klass])
+        return obj;
+    
+    NSString* method = [NSStringFromSelector(fn) stringByReplacingOccurrencesOfString:@":msgID:" withString:@""];
     NSString* objectDesc = [self className];
     objectDesc = [objectDesc substringWithRange:NSMakeRange(2, [objectDesc length] - 13)];
-    [self.client showAPIError:[NSString stringWithFormat:
-                               @"API Error: in %@.%@, argument %d was expected to be type %@ but was %@",
-                               objectDesc,
-                               method,
-                               idx,
-                               [klass self],
-                               realArg]];
+    
+    SDLogError(@"API Error: in %@.%@, argument %d was expected to be type %@ but was %@",
+               objectDesc,
+               method,
+               idx,
+               klass,
+               obj);
+    
+    return nil;
 }
 
-- (void) arrayError:(SEL)sel index:(int)idx wantedClass:(Class)klass got:(id)realArg {
-    NSString* method = [NSStringFromSelector(sel) stringByReplacingOccurrencesOfString:@":msgID:" withString:@""];
-    NSString* objectDesc = [self className];
-    objectDesc = [objectDesc substringWithRange:NSMakeRange(2, [objectDesc length] - 13)];
-    [self.client showAPIError:[NSString stringWithFormat:@"API Error: in %@.%@, element %d (of some array) was expected to be type %@ but was %@",
-                               objectDesc,
-                               method,
-                               idx,
-                               [klass self],
-                               realArg]];
+- (NSArray*) check:(NSArray*)args atIndex:(int)idx forElementType:(Class)klass inFn:(SEL)fn {
+    id obj = [self check:args atIndex:idx forType:[NSArray self] inFn:fn];
+    
+    if (obj) {
+        int i = 0;
+        for (id elem in obj) {
+            if (![elem isKindOfClass:klass]) {
+                NSString* method = [NSStringFromSelector(fn) stringByReplacingOccurrencesOfString:@":msgID:" withString:@""];
+                NSString* objectDesc = [self className];
+                objectDesc = [objectDesc substringWithRange:NSMakeRange(2, [objectDesc length] - 13)];
+                
+                SDLogError(@"API Error: in %@.%@, element %d (of argument %d) was expected to be type %@ but was %@",
+                           objectDesc,
+                           method,
+                           idx,
+                           i,
+                           klass,
+                           elem);
+                
+                return nil;
+            }
+            i++;
+        }
+    }
+    
+    return obj;
 }
 
 @end

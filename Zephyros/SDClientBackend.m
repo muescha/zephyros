@@ -61,7 +61,7 @@
         NSString* sizeValidator = [NSString stringWithFormat:@"%ld\n", size];
         
         if (![sizeValidator isEqualToString:str]) {
-            [self showAPIError:[NSString stringWithFormat:@"API Error: expected JSON data-load length, got: %@", str]];
+            SDLogError(@"API Error: expected JSON data-load length, got: %@", str);
             [self waitForNewMessage];
             return;
         }
@@ -76,7 +76,7 @@
         NSString* rawJson = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
         
         if (obj == nil) {
-            [self showAPIError:[NSString stringWithFormat:@"API Error: expected valid JSON message, got: %@", rawJson]];
+            SDLogError(@"API Error: expected valid JSON message, got: %@", rawJson);
             [self waitForNewMessage];
         }
         else {
@@ -92,11 +92,6 @@
 //    NSLog(@"did disconnect");
     [self.client destroy];
     self.disconnectedHandler(self);
-}
-
-- (void) showAPIError:(NSString*)errorStr {
-    [[SDLogWindowController sharedLogWindowController] show:errorStr
-                                                       type:SDLogMessageTypeError];
 }
 
 @end

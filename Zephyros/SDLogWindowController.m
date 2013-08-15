@@ -137,3 +137,14 @@
 }
 
 @end
+
+void SDLogError(NSString* format, ...) {
+    va_list argsList;
+    va_start(argsList, format);
+    
+    NSString* msg = [[NSString alloc] initWithFormat:format arguments:argsList];
+    [[SDLogWindowController sharedLogWindowController] show:msg
+                                                       type:SDLogMessageTypeError];
+    
+    va_end(argsList);
+}

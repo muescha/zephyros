@@ -27,7 +27,6 @@
 
 // for client-proxies
 
-- (void) showAPIError:(NSString*)errorStr;
 - (void) sendResponse:(id)result forID:(NSNumber*)msgID;
 
 @end

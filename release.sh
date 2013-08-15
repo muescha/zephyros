@@ -19,7 +19,7 @@ cp $FILENAME $LATEST
 echo "Created $LATEST"
 
 # sign update
-SIG=$(ruby ./AutoUpdating/sign_update.rb $FILENAME ~/Dropbox/zeph-keys/dsa_priv.pem)
+SIG=$(ruby ./AutoUpdating/sign_update.rb $FILENAME ~/Dropbox/STEVEN/zeph-keys/dsa_priv.pem)
 FILESIZE=$(stat -f %z $FILENAME)
 APPCASTITEM=$(cat AutoUpdating/template.xml \
     | perl -i -pe "s|<%version%>|$VERSION|g" \

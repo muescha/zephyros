@@ -23,3 +23,5 @@ typedef enum _SDLogMessageType {
 - (void) log:(NSString*)message type:(SDLogMessageType)type;
 
 @end
+
+void SDLogError(NSString* format, ...);

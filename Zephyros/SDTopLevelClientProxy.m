@@ -53,8 +53,7 @@
 
 - (id) bind:(NSArray*)args msgID:(id)msgID {
     SDTypeCheckArg(NSString, key, 0);
-    SDTypeCheckArg(NSArray, mods, 1);
-    SDTypeCheckArray(mods, NSString);
+    SDTypeCheckArrayArg(mods, NSString, 1);
     
     SDHotKey* hotkey = [[SDHotKey alloc] init];
     hotkey.key = [key uppercaseString];
@@ -67,7 +66,7 @@
         [self.hotkeys addObject:hotkey];
     }
     else {
-        [self.client showAPIError:[@"Can't bind: " stringByAppendingString: [hotkey hotKeyDescription]]];
+        SDLogError(@"Can't bind: %@", [hotkey hotKeyDescription]);
     }
     
     return @-1;
@@ -75,8 +74,7 @@
 
 - (id) unbind:(NSArray*)args msgID:(id)msgID {
     SDTypeCheckArg(NSString, key, 0);
-    SDTypeCheckArg(NSArray, mods, 1);
-    SDTypeCheckArray(mods, NSString);
+    SDTypeCheckArrayArg(mods, NSString, 1);
     
     key = [key uppercaseString];
     NSArray* modifiers = [mods valueForKeyPath:@"uppercaseString"];
@@ -201,12 +199,10 @@
 }
 
 - (id) choose_from:(NSArray*)args msgID:(id)msgID {
+    SDTypeCheckArrayArg(list, NSString, 0);
     SDTypeCheckArg(NSString, title, 1);
     SDTypeCheckArg(NSNumber, lines, 2);
     SDTypeCheckArg(NSNumber, chars, 3);
-    
-    SDTypeCheckArg(NSArray, list, 0);
-    SDTypeCheckArray(list, NSString);
     
     [NSApp activateIgnoringOtherApps:YES];
     [SDFuzzyMatcher showChoices:list
