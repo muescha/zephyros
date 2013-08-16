@@ -15,7 +15,7 @@
 
 * Current version: **4.5.1**
 * Requires: OS X 10.8 and up
-* Download: get [.zip file](https://raw.github.com/sdegutis/zephyros/master/Builds/Zephyros-LATEST.app.tar.gz), unzip, right-click app, choose "Open"
+* Download: get [Zephyros-LATEST.app.tar.gz](https://raw.github.com/sdegutis/zephyros/master/Builds/Zephyros-LATEST.app.tar.gz), unzip, right-click app, choose "Open"
 
 #### Basics
 
@@ -156,8 +156,8 @@ If you want to do one, please [open an issue](https://github.com/sdegutis/zephyr
 
 #### More configs
 
-* [The author's config](https://github.com/sdegutis/dotfiles/blob/master/stuff/zeph.rb)
-* Look in the [wiki home page](https://github.com/sdegutis/zephyros/wiki) for other people's configs (including a SizeUp emulator)
+* The author's config file: [zeph.rb](https://github.com/sdegutis/dotfiles/blob/master/stuff/zeph.rb)
+* Look in the wiki for [other people's configs](https://github.com/sdegutis/zephyros/wiki) (including a SizeUp emulator)
 
 ### Community
 
@@ -165,7 +165,8 @@ If you want to do one, please [open an issue](https://github.com/sdegutis/zephyr
 
 ### Change log
 
-**NOTE:** This auto-updater won't work if you're on version 3.x or 2.x due to [this securty fix](https://github.com/sdegutis/zephyros/pull/21).<br>Instead, [click here to download it](https://raw.github.com/sdegutis/zephyros/master/Builds/Zephyros-LATEST.app.tar.gz).
+**NOTE:** This auto-updater won't work if you're on version 3.x or 2.x due to [this securty fix from pull request 21](https://github.com/sdegutis/zephyros/pull/21).<br>
+Instead, [click here to download Zephyros-LATEST.app.tar.gz](https://raw.github.com/sdegutis/zephyros/master/Builds/Zephyros-LATEST.app.tar.gz).
 
 - 4.5.1
     - More resilient to script errors
