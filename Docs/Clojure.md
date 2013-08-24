@@ -30,11 +30,18 @@ lein exec path/to/my-zeph.clj
 
 #### API
 
+The function `bind` and `unbind` uses this [key strings and modifiers](https://github.com/sdegutis/zephyros/blob/master/Zephyros/SDKeyBindingTranslator.m#L148).
+
 ```clojure
 ;; top level
 
 (defn bind [key mods f])
+(defn unbind [key mods])
+
 (defn listen [event f])
+(defn unlisten [event])
+  ;; Valid events and their param-lists:
+  ;;
   ;; 'window_created' args: [win]
   ;; 'window_minimized' args: [win]
   ;; 'window_unminimized' args: [win]
@@ -45,9 +52,9 @@ lein exec path/to/my-zeph.clj
   ;; 'app_hidden' args: [app]
   ;; 'app_shown' args: [app]
   ;; 'screens_changed' args: []
-  ;; 'mouse_moved' args: [movement]
+  ;; 'mouse_moved' args: [movement] (see Protocol.md for details)
+  ;; 'modifiers_changed' args: [mods] (see Protocol.md for details)
 
-(defn unbind [key mods])
 
 (defn get-focused-window [])
 (defn get-visible-windows [])
@@ -128,4 +135,5 @@ lein exec path/to/my-zeph.clj
 
 (defn next-screen [screen])
 (defn previous-screen [screen])
+(defn rotate-to [screen degrees])
 ```

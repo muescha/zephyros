@@ -104,7 +104,10 @@
 (def top-level-obj nil)
 
 (defn bind [key mods f] (do-callback-indefinitely (fn [_] (f)) top-level-obj "bind" key mods))
+(defn unbind [key mods] (get-one-value top-level-obj "unbind" key mods))
+
 (defn listen [event f] (do-callback-indefinitely #(f %) top-level-obj "listen" event))
+(defn unlisten [event] (get-one-value top-level-obj "unlisten" event))
 
 (defn get-focused-window [] (get-one-value top-level-obj "focused_window"))
 (defn get-visible-windows [] (get-one-value top-level-obj "visible_windows"))
@@ -131,7 +134,6 @@
 (defn relaunch-config [] (get-one-value top-level-obj "relaunch_config"))
 (defn get-clipboard-contents [] (get-one-value top-level-obj "clipboard_contents"))
 
-(defn unbind [key mods] (get-one-value top-level-obj "unbind" key mods))
 
 
 ;; window

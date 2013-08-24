@@ -138,6 +138,7 @@ NSString* sd_js_api() {
     "    fn(idx) if first == 3\n"
     "  SDZephJS.sharedZeph().sendAsyncMessage_responses_callbackJSFunc_([NSNull.null(), 'choose_from', list, title, lines, chars], 2, trampolineFn)\n"
     "log = (str) -> SDZephJS.sharedZeph().sendSyncMessage([NSNull.null(), 'log', str])\n"
+    "unlisten = (event) -> SDZephJS.sharedZeph().sendSyncMessage([NSNull.null(), 'unlisten', event])\n"
     "showBox = (str) -> SDZephJS.sharedZeph().sendSyncMessage([NSNull.null(), 'show_box', str])\n"
     "hideBox = -> SDZephJS.sharedZeph().sendSyncMessage([NSNull.null(), 'hide_box'])\n"
     "update_settings = (s) -> SDZephJS.sharedZeph().sendSyncMessage([NSNull.null(), 'update_settings', s])\n"
@@ -151,6 +152,7 @@ NSString* sd_js_api() {
     "  trampolineFn = (thing) ->\n"
     "    switch event\n"
     "      when 'window_created' then fn Window.fromNS(thing)\n"
+    "      when 'focus_changed' then fn Window.fromNS(thing)\n"
     "      when 'window_created' then fn Window.fromNS(thing)\n"
     "      when 'window_minimized' then fn Window.fromNS(thing)\n"
     "      when 'window_unminimized' then fn Window.fromNS(thing)\n"
@@ -162,6 +164,7 @@ NSString* sd_js_api() {
     "      when 'app_shown' then fn App.fromNS(thing)\n"
     "      when 'screens_changed' then fn()\n"
     "      when 'mouse_moved' then fn(thing)\n"
+    "      when 'modifiers_changed' then fn(thing)\n"
     "  SDZephJS.sharedZeph().sendAsyncMessage_responses_callbackJSFunc_([NSNull.null(), 'listen', event], -1, trampolineFn)\n"
     
     "";

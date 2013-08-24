@@ -33,12 +33,14 @@ func ChooseFrom(list []string, title string, linesTall int, charsWide int, fn fu
 //     'window_unminimized' args: [win]
 //     'window_moved' args: [win]
 //     'window_resized' args: [win]
+//     'focus_changed' args: [win]
 //     'app_launched' args: [app]
 //     'app_died' args: [app]
 //     'app_hidden' args: [app]
 //     'app_shown' args: [app]
 //     'screens_changed' args: []
-//     'mouse_moved' args: [mouseMovement]
+//     'mouse_moved' args: [mouseMovement] (see Protocol.md for details)
+//     'modifiers_changed' args: [mods] (see Protocol.md for details)
 func Listen(event string, fn interface{}) {
 	fnValue := reflect.ValueOf(fn)
 	fnType := fnValue.Type()
@@ -69,6 +71,10 @@ func Alert(msg string, dur int) {
 
 func Unbind(key string, mods []string) {
 	send(0, nil, false, "unbind", key, mods)
+}
+
+func Unlisten(event string) {
+	send(0, nil, false, "unlisten", event)
 }
 
 func Log(msg string) {

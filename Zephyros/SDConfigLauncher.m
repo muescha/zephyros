@@ -128,8 +128,8 @@
         NSString* str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            [[SDLogWindowController sharedLogWindowController] show:str
-                                                               type:SDLogMessageTypeUser];
+            [[SDLogWindowController sharedLogWindowController] log:str
+                                                              type:SDLogMessageTypeUser];
         });
     };
     self.launchedTask.gotStderr = ^(NSFileHandle* handle) {
@@ -137,8 +137,8 @@
         NSString* str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            [[SDLogWindowController sharedLogWindowController] show:str
-                                                               type:SDLogMessageTypeError];
+            [[SDLogWindowController sharedLogWindowController] log:str
+                                                              type:SDLogMessageTypeError];
         });
     };
     

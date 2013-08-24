@@ -13,7 +13,7 @@
 
 *The OS X window manager for hackers*
 
-* Current version: **4.5.1**
+* Current version: **4.5.2**
 * Requires: OS X 10.8 and up
 * Download: get [.zip file](https://raw.github.com/sdegutis/zephyros/master/Builds/Zephyros-LATEST.app.tar.gz), unzip, right-click app, choose "Open"
 
@@ -93,7 +93,7 @@ wait_on_callbacks
 
 ```python
 import sys
-sys.path.insert(0, '/Applications/Zephyros.app/Contents/Resources/libs/zephyros.py')
+sys.path.insert(0, '/Applications/Zephyros.app/Contents/Resources/libs')
 import zephyros
 
 @zephyros.zephyros
@@ -165,8 +165,21 @@ If you want to do one, please [open an issue](https://github.com/sdegutis/zephyr
 
 ### Change log
 
-**NOTE:** This auto-updater won't work if you're on version 3.x or 2.x due to [this securty fix](https://github.com/sdegutis/zephyros/pull/21).<br>[Download Zephyros-4.5.zip](https://raw.github.com/sdegutis/zephyros/master/Builds/Zephyros-LATEST.app.tar.gz) directly instead.
+**NOTE:** This auto-updater won't work if you're on version 3.x or 2.x due to [this security fix](https://github.com/sdegutis/zephyros/pull/21).<br>Instead, [click here to download it](https://raw.github.com/sdegutis/zephyros/master/Builds/Zephyros-LATEST.app.tar.gz).
 
+- HEAD
+    - Added protocol-level support for Unix sockets, making it the default
+    - Converted all built-in APIs (except Clojure) to connect via the unix socket
+        - **NOTE:** if you're using Clojure, change the Preferences to use TCP and restart Zephyros
+    - Adds `unlisten` method to all APIs
+    - Adds `modifiers_changed` event to all APIs
+- 4.5.2
+    - Added 'focus_changed' event to all APIs
+    - Now only keeps (or (get-user-default "MAX_LOGS") 1000) logs
+    - Now only pops up log window for error
+    - New menubar icon, courtesy of [danielepolencic](https://github.com/danielepolencic/)
+    - New app icon based on the new menubar icon
+    - Removes that lame meme joke
 - 4.5.1
     - More resilient to script errors
     - Added `screen.rotate_to` to all APIs
@@ -223,17 +236,13 @@ If you want to do one, please [open an issue](https://github.com/sdegutis/zephyr
 - 2.6
     - First version anyone should care about
 
-### Help Needed
-
-Are you good at stuff? We could use these things:
-
-* Better app icon
-* Better menu bar icon
-
 ### Special Thanks
 
-- To everyone.
-    - You're great!
+- To [pd](https://github.com/pd), for all the great ideas and help in the beginning
+- To [muescha](https://github.com/muescha), for the constant flow of feature requests, pull requests, and bug reports
+- To [danielepolencic](https://github.com/danielepolencic/), for the new menu bar icon
+- To [jdiehl](https://github.com/jdiehl/), for [his unix-sockets version of CocoaAsyncSocket](https://github.com/jdiehl/CocoaAsyncSocket/tree/socketUN)
+- To everyone. You're great!
 
 ### License
 

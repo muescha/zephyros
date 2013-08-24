@@ -63,6 +63,15 @@ void obsessiveWindowCallback(AXObserverRef observer, AXUIElementRef element, CFS
         SDWindowProxy* window = [[SDWindowProxy alloc] initWithElement:element];
         sendNotificationButNotTooOften(SDListenEventFocusChanged, window);
     }
+    else if (CFEqual(notification, kAXMainWindowChangedNotification)) {
+        SDWindowProxy* window = [[SDWindowProxy alloc] initWithElement:element];
+        sendNotificationButNotTooOften(SDListenEventFocusChanged, window);
+    }
+    else if (CFEqual(notification, kAXApplicationActivatedNotification)) {
+        SDWindowProxy* window = [SDWindowProxy focusedWindow];
+        if (window)
+            sendNotificationButNotTooOften(SDListenEventFocusChanged, window);
+    }
 }
 
 @implementation SDAppProxy
@@ -179,6 +188,8 @@ void obsessiveWindowCallback(AXObserverRef observer, AXUIElementRef element, CFS
     AXObserverAddNotification(self.observer, self.app, kAXApplicationHiddenNotification, NULL);
     AXObserverAddNotification(self.observer, self.app, kAXApplicationShownNotification, NULL);
     AXObserverAddNotification(self.observer, self.app, kAXFocusedWindowChangedNotification, NULL);
+    AXObserverAddNotification(self.observer, self.app, kAXApplicationActivatedNotification, NULL);
+    AXObserverAddNotification(self.observer, self.app, kAXMainWindowChangedNotification, NULL);
     
     CFRunLoopAddSource([[NSRunLoop currentRunLoop] getCFRunLoop],
                        AXObserverGetRunLoopSource(self.observer),
@@ -198,6 +209,8 @@ void obsessiveWindowCallback(AXObserverRef observer, AXUIElementRef element, CFS
     AXObserverRemoveNotification(self.observer, self.app, kAXApplicationHiddenNotification);
     AXObserverRemoveNotification(self.observer, self.app, kAXApplicationShownNotification);
     AXObserverRemoveNotification(self.observer, self.app, kAXFocusedWindowChangedNotification);
+    AXObserverRemoveNotification(self.observer, self.app, kAXApplicationActivatedNotification);
+    AXObserverRemoveNotification(self.observer, self.app, kAXMainWindowChangedNotification);
     
     CFRelease(self.observer);
     self.observer = nil;

@@ -15,8 +15,8 @@ def run_in_background(fn):
 class ZephClient(object):
     def start(self):
         try:
-            self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            self.sock.connect(('127.0.0.1', 1235))
+            self.sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+            self.sock.connect('/tmp/zephyros.sock')
         except:
             print "Can't connect. Is Zephyros running?"
             sys.exit(1)
@@ -197,6 +197,7 @@ class Api(Proxy):
         zeph.send_message([self.id, 'bind', key, mods], callback=tmp_fn)
     def choose_from(self, lst, title, lines, chars, fn):
         zeph.send_message([self.id, 'choose_from', lst, title, lines, chars], callback=fn, infinite=False)
+    def unlisten(self, event): self._send_sync('unlisten', event)
     def listen(self, event, fn):
         def tmp_fn(obj):
             if event == "window_created":       fn(Window(obj))
@@ -204,12 +205,14 @@ class Api(Proxy):
             elif event == "window_unminimized": fn(Window(obj))
             elif event == "window_moved":       fn(Window(obj))
             elif event == "window_resized":     fn(Window(obj))
+            elif event == "focus_changed":      fn(Window(obj))
             elif event == "app_launched":       fn(App(obj))
             elif event == "app_died":           fn(App(obj))
             elif event == "app_hidden":         fn(App(obj))
             elif event == "app_shown":          fn(App(obj))
             elif event == "screens_changed":    fn()
             elif event == "mouse_moved":        fn(obj)
+            elif event == "modifiers_changed":  fn(obj)
         zeph.send_message([self.id, 'listen', event], callback=tmp_fn)
 
 api = Api(None)

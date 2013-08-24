@@ -12,7 +12,7 @@ end
 class Zeph
 
   def initialize
-    @sock = TCPSocket.new 'localhost', 1235
+    @sock = UNIXSocket.new '/tmp/zephyros.sock'
     @id = 0
     @queues = {}
 
@@ -247,12 +247,14 @@ class API
         when 'window_unminimized' then blk.call Window.new arg
         when 'window_moved' then blk.call Window.new arg
         when 'window_resized' then blk.call Window.new arg
+        when 'focus_changed' then blk.call Window.new arg
         when 'app_launched' then blk.call App.new arg
         when 'app_died' then blk.call App.new arg
         when 'app_hidden' then blk.call App.new arg
         when 'app_shown' then blk.call App.new arg
         when 'screens_changed' then blk.call
         when 'mouse_moved' then blk.call arg
+        when 'modifiers_changed' then blk.call arg
         end
       end
     end

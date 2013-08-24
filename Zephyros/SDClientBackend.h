@@ -20,4 +20,6 @@
 
 @property (copy) void(^disconnectedHandler)(SDClientBackend* me);
 
+- (void) destroy;
+
 @end

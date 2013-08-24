@@ -19,7 +19,6 @@ typedef enum _SDLogMessageType {
 
 + (SDLogWindowController*) sharedLogWindowController;
 
-- (void) show:(NSString*)message type:(SDLogMessageType)type;
 - (void) log:(NSString*)message type:(SDLogMessageType)type;
 
 @end

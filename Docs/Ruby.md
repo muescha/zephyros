@@ -21,7 +21,7 @@ ruby path/to/my-script.rb
 
 #### API
 
-The function `API.bind` uses [this list](https://github.com/sdegutis/zephyros/blob/master/Zephyros/SDKeyBindingTranslator.m#L148) of key strings.
+The function `bind` and `unbind` uses this [key strings and modifiers](https://github.com/sdegutis/zephyros/blob/master/Zephyros/SDKeyBindingTranslator.m#L148).
 
 ```ruby
 class API
@@ -56,6 +56,7 @@ class API
 
     def running_apps; end
 
+    def unlisten(event); end
     def listen(event, &blk); end
         # 'window_created', callback args: (win)
         # 'window_minimized', callback args: (win)
@@ -67,7 +68,8 @@ class API
         # 'app_hidden', callback args: (app)
         # 'app_shown', callback args: (app)
         # 'screens_changed', callback args: ()
-        # 'mouse_moved', callback args: (movement)
+        # 'mouse_moved', callback args: (movement) # see Protocol.md for details
+        # 'modifiers_changed'', callback args: (movement) # see Protocol.md for details
 
   end
 

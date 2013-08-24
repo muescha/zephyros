@@ -19,7 +19,9 @@
 #define SDListenEventAppShown @"SD_EVENT_APP_SHOWN"
 #define SDListenEventFocusChanged @"SD_EVENT_FOCUS_CHANGED"
 #define SDListenEventScreensChanged @"SD_EVENT_SCREENS_CHANGED"
+
 #define SDListenEventMouseMoved @"SD_EVENT_MOUSE_MOVED"
+#define SDListenEventModifiersChanged @"SD_EVENT_MODIFIERS_CHANGED"
 
 @interface SDAppStalker : NSObject
 

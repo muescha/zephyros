@@ -13,7 +13,7 @@ import (
 
 
 func connect() net.Conn {
-	conn, err := net.Dial("tcp", "localhost:1235")
+	conn, err := net.Dial("unix", "/tmp/zephyros.sock")
 	if err != nil {
 		fmt.Println("Can't connect. Is Zephyros running?")
 		os.Exit(1)

@@ -2,9 +2,10 @@
 
 * Clients connect to Zephyros via TCP
 * All messages are simple JSON arrays
-* Messages in both directions are encoded as `json.length.to_s + "\n" + json`
+* Messages in both directions are encoded as `json.bytesize.to_s + "\n" + json`
 * Each message to Zephyros will be [msg_id, receiver_id, method, *args]
     * msg_id can be of any type you choose, as long as it's unique per request
+    * receiver_id can be windows_id, app_id, or screen_id
 * Each response from Zephyros will be [msg_id, value]
     * Each response can be matched to its request by msg_id
     * Every message will get at least one response
@@ -46,25 +47,45 @@ end
 
 #### Top level
 
-Name               | Args                                | Return value
--------------------|-------------------------------------|--------------------
-bind               | key, [modifier, ...]                | nil, followed by: callback, ...
-listen             | event_name                          | nil, followed by: callback, ...
-unbind             | key, [modifier, ...]                |
-relaunch_config    |                                     |
-clipboard_contents |                                     | string
-focused_window     |                                     | [window_id](#window)
-visible_windows    |                                     | [[window_id](#window), ...]
-all_windows        |                                     | [[window_id](#window), ...]
-main_screen        |                                     | [screen_id](#screen)
-all_screens        |                                     | [[screen_id](#screen), ...]
-running_apps       |                                     | [[app_id](#app), ...]
-alert              | msg, duration_sec                   |
-log                | msg                                 |
-show_box           | msg                                 |
-hide_box           |                                     |
-choose_from        | list, title, lines_tall, chars_wide | 0, followed by: chosen index or nil if canceled
-update_settings    | map of strings to values            |
+Name               | Args                                    | Return value
+-------------------|-----------------------------------------|--------------------
+bind               | key, [modifier, ...]  *(see note 1)*    | nil, followed by: callback, ...
+unbind             | key, [modifier, ...]  *(see note 1)*    |
+listen             | event_name            *(see note 2)*    | nil, followed by: callback, ...
+unlisten           | event_name            *(see note 2)*    | nil
+relaunch_config    |                                         |
+clipboard_contents |                                         | string
+focused_window     |                                         | [window_id](#window)
+visible_windows    |                                         | [[window_id](#window), ...]
+all_windows        |                                         | [[window_id](#window), ...]
+main_screen        |                                         | [screen_id](#screen)
+all_screens        |                                         | [[screen_id](#screen), ...]
+running_apps       |                                         | [[app_id](#app), ...]
+alert              | msg, duration_sec                       |
+log                | msg                                     |
+show_box           | msg                                     |
+hide_box           |                                         |
+choose_from        | list, title, lines_tall, chars_wide     | 0, followed by: chosen index or nil if canceled
+update_settings    | map of strings to values *(see note 3)* |
+
+
+##### note 1: Key Strings and modifiers
+
+The function `bind` and `unbind` uses this [key strings and modifiers](https://github.com/sdegutis/zephyros/blob/master/Zephyros/SDKeyBindingTranslator.m#L148).
+
+
+##### note 2: Event names
+
+see section [Events](#events)
+
+
+##### note 3: Settings
+
+```ruby
+{:alert_should_animate => false, :alert_default_delay => 0.5}
+```
+
+### Receiver
 
 #### Window
 
@@ -111,14 +132,18 @@ kill9           |      |
 
 #### Screen
 
-Name                          | Args         | Return value
-------------------------------|--------------|--------------
-frame_including_dock_and_menu | {x, y, w, h} |
-frame_without_dock_or_menu    | {x, y, w, h} |
-previous_screen               |              | [screen_id](#screen)
-next_screen                   |              | [screen_id](#screen)
+Name                          | Args                              | Return value
+------------------------------|-----------------------------------|--------------
+frame_including_dock_and_menu | {x, y, w, h}                      |
+frame_without_dock_or_menu    | {x, y, w, h}                      |
+previous_screen               |                                   | [screen_id](#screen)
+next_screen                   |                                   | [screen_id](#screen)
+rotate_to                     | degree *(only: 0,90,180, or 270)* |
 
-#### Events
+
+### Events
+
+Events are used for `listen`
 
 Event name          | Callback parameter list
 --------------------|-------------------------
@@ -128,8 +153,10 @@ window_unminimized  | [[window_id](#window)]
 window_moved        | [[window_id](#window)]
 window_resized      | [[window_id](#window)]
 app_launched        | [[appdow_id](#window)]
+focus_changed       | [[appdow_id](#window)]
 app_died            | [[app_id](#app)]
 app_hidden          | [[app_id](#app)]
 app_shown           | [[app_id](#app)]
 screens_changed     | []
 mouse_moved         | [{x: number, y: number, deltaX: number, deltaY: number, dragged: bool [, whichButton: int] }] where whichButton is only there when you drag, and is one of [-1, 0, 1] representing [left, middle, right]
+modifiers_changed   | an array containing any (or none) of ['CTRL', 'CMD', 'ALT', 'SHIFT', 'FN'] ... note: a change can mean key up or key down

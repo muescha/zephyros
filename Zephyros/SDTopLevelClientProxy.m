@@ -11,6 +11,7 @@
 #import "SDHotKey.h"
 #import "SDEventListener.h"
 #import "SDMouseFollower.h"
+#import "SDModifierKeysListener.h"
 
 #import "SDFuzzyMatcher.h"
 #import "SDConfigLauncher.h"
@@ -42,6 +43,8 @@
 }
 
 - (void) destroy {
+//    NSLog(@"destrying bindings and listeners");
+    
     for (SDHotKey* hotkey in self.hotkeys) {
         [hotkey unbind];
     }
@@ -52,6 +55,8 @@
 }
 
 - (id) bind:(NSArray*)args msgID:(id)msgID {
+//    NSLog(@"binding");
+    
     SDTypeCheckArg(NSString, key, 0);
     SDTypeCheckArrayArg(mods, NSString, 1);
     
@@ -104,6 +109,10 @@
         // only incur the cost for those who wish to pay the price
         [[SDMouseFollower sharedFollower] startListening];
     }
+    else if ([[event uppercaseString] isEqualToString:@"MODIFIERS_CHANGED"]) {
+        // only incur the cost for those who wish to pay the price
+        [[SDModifierKeysListener sharedListener] startListening];
+    }
     
     SDEventListener* listener = [[SDEventListener alloc] init];
     listener.eventName = event;
@@ -115,6 +124,22 @@
     [self.listeners addObject:listener];
     
     return @-1;
+}
+
+- (id) unlisten:(NSArray*)args msgID:(id)msgID {
+    SDTypeCheckArg(NSString, event, 0);
+    
+    for (SDEventListener* listener in self.listeners) {
+        if ([listener.eventName isEqualToString:event]) {
+            [listener stopListening];
+            
+            dispatch_async(dispatch_get_current_queue(), ^{
+                [self.listeners removeObject: listener];
+            });
+        }
+    }
+    
+    return nil;
 }
 
 - (id) relaunch_config:(NSArray*)args msgID:(id)msgID {
@@ -167,8 +192,8 @@
 - (id) log:(NSArray*)args msgID:(id)msgID {
     SDTypeCheckArg(NSString, str, 0);
     
-    [[SDLogWindowController sharedLogWindowController] show:str
-                                                       type:SDLogMessageTypeUser];
+    [[SDLogWindowController sharedLogWindowController] log:str
+                                                      type:SDLogMessageTypeUser];
     return nil;
 }
 

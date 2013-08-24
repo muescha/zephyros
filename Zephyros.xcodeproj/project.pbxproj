@@ -9,10 +9,7 @@
 /* Begin PBXBuildFile section */
 		9435A4D417AEDCC700754D27 /* zephjs in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9435A4D017AEDB3D00754D27 /* zephjs */; };
 		943921BA1719B1EE00F63073 /* statusitem.png in Resources */ = {isa = PBXBuildFile; fileRef = 943921B61719B1EE00F63073 /* statusitem.png */; };
-		943921BB1719B1EE00F63073 /* statusitem_pressed.png in Resources */ = {isa = PBXBuildFile; fileRef = 943921B71719B1EE00F63073 /* statusitem_pressed.png */; };
-		943921BC1719B1EE00F63073 /* statusitem_pressed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 943921B81719B1EE00F63073 /* statusitem_pressed@2x.png */; };
 		943921BD1719B1EE00F63073 /* statusitem@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 943921B91719B1EE00F63073 /* statusitem@2x.png */; };
-		943921BF1719B66C00F63073 /* windows.icns in Resources */ = {isa = PBXBuildFile; fileRef = 943921BE1719B66C00F63073 /* windows.icns */; };
 		94454B33171B31AC003EF64E /* SDScreenProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 94454B32171B31AC003EF64E /* SDScreenProxy.m */; };
 		94454B37171B4179003EF64E /* SDAlertWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 94454B35171B4179003EF64E /* SDAlertWindowController.m */; };
 		94454B38171B4179003EF64E /* AlertWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 94454B36171B4179003EF64E /* AlertWindow.xib */; };
@@ -26,8 +23,10 @@
 		945AD7C217A8692A00578BEB /* NSString+Score.m in Sources */ = {isa = PBXBuildFile; fileRef = 945AD7BC17A8692A00578BEB /* NSString+Score.m */; };
 		9463D43417A77E2C00A3E905 /* SDGeometry.m in Sources */ = {isa = PBXBuildFile; fileRef = 9463D43317A77E2C00A3E905 /* SDGeometry.m */; };
 		9466562217AFA5EE00B68607 /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9466562117AFA5EE00B68607 /* ApplicationServices.framework */; };
+		94696E1417C8271D0018631C /* zephyros.icns in Resources */ = {isa = PBXBuildFile; fileRef = 94696E1317C8271D0018631C /* zephyros.icns */; };
 		946C596217B7CF6A0021A540 /* SDClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 946C596117B7CF6A0021A540 /* SDClient.m */; };
 		94779BD117A85CB000649169 /* Licenses in Resources */ = {isa = PBXBuildFile; fileRef = 94779BD017A85CB000649169 /* Licenses */; };
+		9478F8D017C87CB30053DE2C /* SDModifierKeysListener.m in Sources */ = {isa = PBXBuildFile; fileRef = 9478F8CF17C87CB30053DE2C /* SDModifierKeysListener.m */; };
 		947DC89317B9D18700F2128F /* SDClientProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 947DC89217B9D18700F2128F /* SDClientProxy.m */; };
 		947DC89617B9D19F00F2128F /* SDTopLevelClientProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 947DC89517B9D19F00F2128F /* SDTopLevelClientProxy.m */; };
 		947DC89917B9D1B800F2128F /* SDWindowClientProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 947DC89817B9D1B800F2128F /* SDWindowClientProxy.m */; };
@@ -117,10 +116,7 @@
 /* Begin PBXFileReference section */
 		9435A4CB17AEDB3C00754D27 /* zephjs.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = zephjs.xcodeproj; path = zephjs/zephjs.xcodeproj; sourceTree = "<group>"; };
 		943921B61719B1EE00F63073 /* statusitem.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = statusitem.png; sourceTree = "<group>"; };
-		943921B71719B1EE00F63073 /* statusitem_pressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = statusitem_pressed.png; sourceTree = "<group>"; };
-		943921B81719B1EE00F63073 /* statusitem_pressed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "statusitem_pressed@2x.png"; sourceTree = "<group>"; };
 		943921B91719B1EE00F63073 /* statusitem@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "statusitem@2x.png"; sourceTree = "<group>"; };
-		943921BE1719B66C00F63073 /* windows.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = windows.icns; path = "Graphics/app-icon/windows.icns"; sourceTree = SOURCE_ROOT; };
 		94454B31171B31AC003EF64E /* SDScreenProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDScreenProxy.h; sourceTree = "<group>"; };
 		94454B32171B31AC003EF64E /* SDScreenProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDScreenProxy.m; sourceTree = "<group>"; };
 		94454B34171B4179003EF64E /* SDAlertWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDAlertWindowController.h; sourceTree = "<group>"; };
@@ -144,9 +140,12 @@
 		9463D43317A77E2C00A3E905 /* SDGeometry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDGeometry.m; sourceTree = "<group>"; };
 		9466561F17AFA58400B68607 /* HIToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HIToolbox.framework; path = System/Library/Frameworks/Carbon.framework/Frameworks/HIToolbox.framework; sourceTree = SDKROOT; };
 		9466562117AFA5EE00B68607 /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = System/Library/Frameworks/ApplicationServices.framework; sourceTree = SDKROOT; };
+		94696E1317C8271D0018631C /* zephyros.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = zephyros.icns; path = "Graphics/app-icon/zephyros.icns"; sourceTree = SOURCE_ROOT; };
 		946C596017B7CF6A0021A540 /* SDClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDClient.h; sourceTree = "<group>"; };
 		946C596117B7CF6A0021A540 /* SDClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDClient.m; sourceTree = "<group>"; };
 		94779BD017A85CB000649169 /* Licenses */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Licenses; sourceTree = SOURCE_ROOT; };
+		9478F8CE17C87CB30053DE2C /* SDModifierKeysListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDModifierKeysListener.h; sourceTree = "<group>"; };
+		9478F8CF17C87CB30053DE2C /* SDModifierKeysListener.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDModifierKeysListener.m; sourceTree = "<group>"; };
 		947DC89117B9D18700F2128F /* SDClientProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDClientProxy.h; sourceTree = "<group>"; };
 		947DC89217B9D18700F2128F /* SDClientProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDClientProxy.m; sourceTree = "<group>"; };
 		947DC89417B9D19F00F2128F /* SDTopLevelClientProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDTopLevelClientProxy.h; sourceTree = "<group>"; };
@@ -265,10 +264,8 @@
 		943921B51719B1E600F63073 /* Graphics */ = {
 			isa = PBXGroup;
 			children = (
-				943921BE1719B66C00F63073 /* windows.icns */,
+				94696E1317C8271D0018631C /* zephyros.icns */,
 				943921B61719B1EE00F63073 /* statusitem.png */,
-				943921B71719B1EE00F63073 /* statusitem_pressed.png */,
-				943921B81719B1EE00F63073 /* statusitem_pressed@2x.png */,
 				943921B91719B1EE00F63073 /* statusitem@2x.png */,
 			);
 			name = Graphics;
@@ -316,6 +313,8 @@
 				94D07FBC1723C61C00CF44E9 /* SDEventListener.m */,
 				9458EC4E17BA79610077CBB8 /* SDMouseFollower.h */,
 				9458EC4F17BA79610077CBB8 /* SDMouseFollower.m */,
+				9478F8CE17C87CB30053DE2C /* SDModifierKeysListener.h */,
+				9478F8CF17C87CB30053DE2C /* SDModifierKeysListener.m */,
 			);
 			name = Events;
 			sourceTree = "<group>";
@@ -627,10 +626,7 @@
 				94873F3817191F40000AC0A6 /* InfoPlist.strings in Resources */,
 				94873F4417191F40000AC0A6 /* MainMenu.xib in Resources */,
 				943921BA1719B1EE00F63073 /* statusitem.png in Resources */,
-				943921BB1719B1EE00F63073 /* statusitem_pressed.png in Resources */,
-				943921BC1719B1EE00F63073 /* statusitem_pressed@2x.png in Resources */,
 				943921BD1719B1EE00F63073 /* statusitem@2x.png in Resources */,
-				943921BF1719B66C00F63073 /* windows.icns in Resources */,
 				94DAFB531719B99A00526003 /* LogWindow.xib in Resources */,
 				94454B38171B4179003EF64E /* AlertWindow.xib in Resources */,
 				947E995F171D18B6006F30AC /* Credits.rtf in Resources */,
@@ -640,6 +636,7 @@
 				945AD7BE17A8692A00578BEB /* SDFuzzyMatcherWindow.xib in Resources */,
 				94E02EE417AB2496005AE3E8 /* libs in Resources */,
 				94BC236417BA150800BB4FDF /* SDBoxWindow.xib in Resources */,
+				94696E1417C8271D0018631C /* zephyros.icns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -690,6 +687,7 @@
 				947DC89F17B9D1D100F2128F /* SDScreenClientProxy.m in Sources */,
 				94BC236317BA150800BB4FDF /* SDBoxWindowController.m in Sources */,
 				9458EC5017BA79610077CBB8 /* SDMouseFollower.m in Sources */,
+				9478F8D017C87CB30053DE2C /* SDModifierKeysListener.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

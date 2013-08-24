@@ -108,6 +108,9 @@
 }
 
 - (void) log:(NSString*)message type:(SDLogMessageType)type {
+    if (type == SDLogMessageTypeError && !self.window.isVisible)
+        [self showWindow:nil];
+    
     SDLog* log = [[SDLog alloc] init];
     
     log.time = [NSDate date];
@@ -115,6 +118,13 @@
     log.message = message;
     
     [self.logs addObject:log];
+    
+    NSInteger maxLogs = [[NSUserDefaults standardUserDefaults] integerForKey:@"MAX_LOGS"];
+    if (maxLogs == 0)
+        maxLogs = 1000;
+    
+    if ([self.logs count] > maxLogs)
+        [self.logs removeObjectsInRange:NSMakeRange(0, [self.logs count] - maxLogs)];
     
     [[self class] cancelPreviousPerformRequestsWithTarget:self selector:@selector(refreshLogs:) object:nil];
     [self performSelector:@selector(refreshLogs:) withObject:nil afterDelay:0.1];
@@ -128,14 +138,6 @@
     [self.logTableView scrollRowToVisible:lastRow];
 }
 
-- (void) show:(NSString*)message type:(SDLogMessageType)type {
-    if (!self.window.isVisible) {
-        [self showWindow:nil];
-    }
-    
-    [self log:message type:type];
-}
-
 @end
 
 void SDLogError(NSString* format, ...) {
@@ -143,8 +145,8 @@ void SDLogError(NSString* format, ...) {
     va_start(argsList, format);
     
     NSString* msg = [[NSString alloc] initWithFormat:format arguments:argsList];
-    [[SDLogWindowController sharedLogWindowController] show:msg
-                                                       type:SDLogMessageTypeError];
+    [[SDLogWindowController sharedLogWindowController] log:msg
+                                                      type:SDLogMessageTypeError];
     
     va_end(argsList);
 }

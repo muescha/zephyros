@@ -88,10 +88,21 @@
     }
 }
 
-- (void)socketDidDisconnect:(GCDAsyncSocket *)sock withError:(NSError *)err {
-//    NSLog(@"did disconnect");
+- (void) disconnect {
+    [self.sock disconnectAfterReadingAndWriting];
+    [self destroy];
+}
+
+- (void) destroy {
+    self.sock.delegate = nil;
+    self.sock = nil;
     [self.client destroy];
     self.disconnectedHandler(self);
+}
+
+- (void)socketDidDisconnect:(GCDAsyncSocket *)sock withError:(NSError *)err {
+//    NSLog(@"did disconnect");
+    [self destroy];
 }
 
 @end

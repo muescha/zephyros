@@ -197,12 +197,23 @@
 
 // unix and tcp sockets
 
-- (IBAction) switchSocketType:(id)sender {
+- (void) restartListener {
+    [[SDConfigLauncher sharedConfigLauncher] unlaunch];
     [[SDClientListener sharedListener] startListening];
+    
+    double delayInSeconds = 1.0;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_current_queue(), ^(void){
+        [[SDConfigLauncher sharedConfigLauncher] launchConfigMaybe];
+    });
+}
+
+- (IBAction) switchSocketType:(id)sender {
+    [self restartListener];
 }
 
 - (IBAction) switchSocketPort:(id)sender {
-    [[SDClientListener sharedListener] startListening];
+    [self restartListener];
 }
 
 @end

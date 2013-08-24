@@ -13,7 +13,7 @@
 
 #import "GCDAsyncSocket.h"
 
-#define FOREVER (60.0 * 60.0 * 24.0 * 365.0)
+#define FOREVER (-1)
 
 
 // copied verbatim from http://nullpointer.ph/questions/339/how-do-you-implement-a-thread-safe-queue-for-objective-c
@@ -148,7 +148,10 @@
     self.queues = [NSMutableDictionary dictionary];
     
     self.sock = [[GCDAsyncSocket alloc] initWithDelegate:self delegateQueue:dispatch_get_main_queue()];
-    BOOL connected = [self.sock connectToHost:@"localhost" onPort:1235 error:NULL];
+    BOOL connected = [self.sock connectToUrl:[NSURL fileURLWithPath:@"/tmp/zephyros.sock"]
+                                 withTimeout:FOREVER
+                                       error:NULL];
+//    BOOL connected = [self.sock connectToHost:@"localhost" onPort:1235 error:NULL];
     
     [self waitForNewMessage];
     return connected;

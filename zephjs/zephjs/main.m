@@ -14,7 +14,7 @@ int main(int argc, const char * argv[]) {
     @autoreleasepool {
         if (argc != 2) {
             printf("usage: zephjs script.js\n"
-                   "       zephjs script.coffee");
+                   "       zephjs script.coffee\n");
             return 1;
         }
         
