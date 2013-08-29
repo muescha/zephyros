@@ -54,6 +54,14 @@ func (self Window) Minimize() {
 	send(float64(self), nil, false, "minimize")
 }
 
+func (self Window) Retain() {
+	send(float64(self), nil, false, "retain")
+}
+
+func (self Window) Release() {
+	send(float64(self), nil, false, "release")
+}
+
 func (self Window) UnMinimize() {
 	send(float64(self), nil, false, "un_minimize")
 }

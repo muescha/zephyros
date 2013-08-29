@@ -1,6 +1,6 @@
 ## Zephyros - Python API
 
-#### Setup Script
+#### Sample Script
 
 ```python
 import sys
@@ -31,6 +31,13 @@ python path/to/my-script.py
 #### API
 
 ```python
+class Resource(Proxy):
+    # These methods must be used when you want to keep a refernce around longer than a single callback.
+    # Retain increments the retain-count and release decrements it. When it reaches 0, it will be garbage-collected after 5 seconds.
+    # When you first get a resource back, it starts with a retain-count of 0.
+    def retain(self)
+    def release(self)
+
 class Rect(object):
     def __init__(self, x=0, y=0, w=0, h=0):
         self.x = x
@@ -48,7 +55,7 @@ class Size(object):
         self.w = w
         self.h = h
 
-class Window(Proxy):
+class Window(Resource):
     def title(self)
     def frame(self)
     def top_left(self)
@@ -75,14 +82,14 @@ class Window(Proxy):
     def other_windows_on_same_screen(self)
     def other_windows_on_all_screens(self)
 
-class Screen(Proxy):
+class Screen(Resource):
     def frame_including_dock_and_menu(self)
     def frame_without_dock_or_menu(self)
     def previous_screen(self)
     def next_screen(self)
     def rotate_to(self, degrees)  # degree only: 0,90,180, or 270
 
-class App(Proxy):
+class App(Resource):
     def visible_windows(self)
     def all_windows(self)
     def title(self)

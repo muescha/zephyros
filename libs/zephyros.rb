@@ -31,7 +31,7 @@ class Zeph
     id = @id += 1
     @queues[id] = Queue.new
     json = [id].concat(data).to_json
-    @sock.write "#{json.bytesize}\n#{json}"
+    @sock.puts json
 
     if blk.nil?
       o = @queues[id].pop
@@ -63,11 +63,10 @@ class Zeph
   def listen_forever
     Thread.new do
       loop do
-        size = @sock.gets
-        msg = @sock.read(size.to_i)
-        j = JSON.load(msg)
-        id = j[0]
-        obj = j[1]
+        raw_msg = @sock.gets
+        json_msg = JSON.load(raw_msg)
+        id = json_msg[0]
+        obj = json_msg[1]
         @queues[id].push obj
       end
     end

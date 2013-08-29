@@ -5,6 +5,14 @@
 ```ruby
 require '/Applications/Zephyros.app/Contents/Resources/libs/zephyros.rb'
 
+# push to top half of screen
+API.bind "K", ["cmd", "alt", "ctrl"] do
+  win = API.focused_window
+  frame = win.screen.frame_without_dock_or_menu
+  frame.h /= 2
+  win.frame = frame
+end
+
 # alert hello world
 API.bind "D", ["Cmd", "Shift"] do
   API.alert 'hello world'
@@ -75,7 +83,16 @@ class API
 
 end
 
-class Screen
+class Resource
+  # These methods must be used when you want to keep a refernce around longer than a single callback.
+  # Retain increments the retain-count and release decrements it. When it reaches 0, it will be garbage-collected after 5 seconds.
+  # When you first get a resource back, it starts with a retain-count of 0.
+
+  def retain; end
+  def release; end
+end
+
+class Screen < Resource
 
   def frame_including_dock_and_menu; end
   def frame_without_dock_or_menu; end
@@ -84,7 +101,7 @@ class Screen
 
 end
 
-class App
+class App < Resource
 
   def all_windows; end
   def visible_windows; end
@@ -105,7 +122,7 @@ $window_grid_height = 2
 $window_grid_margin_x = 5
 $window_grid_margin_y = 5
 
-class Window
+class Window < Resource
 
   def other_windows_on_same_screen; end
 
@@ -155,5 +172,4 @@ class Rect < Struct.new(:x, :y, :w, :h)
     def inset!; end
 
 end
-
 ```

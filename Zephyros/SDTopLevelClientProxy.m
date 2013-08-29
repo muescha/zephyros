@@ -38,7 +38,11 @@
     return self;
 }
 
-- (void) delayDeath {
+- (void) retainRef {
+    // no-op
+}
+
+- (void) releaseRef {
     // no-op
 }
 
@@ -52,6 +56,16 @@
     for (SDEventListener* listener in self.listeners) {
         [listener stopListening];
     }
+}
+
+- (id) undo:(NSArray*)args msgID:(id)msgID {
+    [[self.client undoManager] undo];
+    return nil;
+}
+
+- (id) redo:(NSArray*)args msgID:(id)msgID {
+    [[self.client undoManager] redo];
+    return nil;
 }
 
 - (id) bind:(NSArray*)args msgID:(id)msgID {

@@ -13,8 +13,8 @@
 
 *The OS X window manager for hackers*
 
-* Current version: **4.5.2**
-* Requires: OS X 10.8 and up
+* Current version: **5.0**
+* Requires: OS X 10.7 and up
 * Download: get [.zip file](https://raw.github.com/sdegutis/zephyros/master/Builds/Zephyros-LATEST.app.tar.gz), unzip, right-click app, choose "Open"
 
 #### Basics
@@ -37,10 +37,6 @@ You typically write a script that binds global hot keys to do stuff, like moving
 - get free pizza (okay not really)
 - and more!
 
-#### API
-
-All languages use the same [API](Docs/Protocol.md).
-
 #### Some languages you can use
 
 - [Using Clojure](Docs/Clojure.md)
@@ -50,114 +46,28 @@ All languages use the same [API](Docs/Protocol.md).
 - [Using JavaScript](Docs/JavaScript.md)
 - [Using CoffeeScript](Docs/CoffeeScript.md)
 
-Don't see your favorite language here? See the [using other languages](#using-other-languages) section.
+**Note:** all the languages use the same simple [underlying API](Docs/Protocol.md).
 
-### Example Configs
+* The [wiki home page](https://github.com/sdegutis/zephyros/wiki) has other people's configs, configs that emulate apps, and useful tricks
 
-#### Ruby [(docs)](Docs/Ruby.md)
+#### Frequently Asked Questions
 
-```ruby
-require '/Applications/Zephyros.app/Contents/Resources/libs/zephyros.rb'
-
-# push to top half of screen
-API.bind "K", ["cmd", "alt", "ctrl"] do
-  win = API.focused_window
-  frame = win.screen.frame_without_dock_or_menu
-  frame.h /= 2
-  win.frame = frame
-end
-
-wait_on_callbacks
-```
-
-#### Clojure [(docs)](Docs/Clojure.md)
-
-```clojure
-(use '[leiningen.exec :only (deps)])
-(deps '[[org.clojure/data.json "0.2.2"]])
-
-(load-file "/Applications/Zephyros.app/Contents/Resources/libs/zephyros.clj")
-
-(bind "D" ["Cmd" "Shift"]
-      (fn []
-        (alert "hello world" 1)
-        (let [win (get-focused-window)
-              f (get-frame win)
-              f (update-in f [:x] + 10)]
-          (set-frame win f))))
-
-@listen-for-callbacks ;; necessary when you use (bind) or (listen)
-```
-
-#### Python [(docs)](Docs/Python.md)
-
-```python
-import sys
-sys.path.insert(0, '/Applications/Zephyros.app/Contents/Resources/libs')
-import zephyros
-
-@zephyros.zephyros
-def myscript():
-    def nudge_window():
-        win = zephyros.api.focused_window()
-        f = win.frame()
-        f.x += 10
-        win.set_frame(f)
-
-    def show_window_title():
-        zephyros.api.alert(zephyros.api.focused_window().title())
-
-    zephyros.api.bind('D', ['Cmd', 'Shift'], show_window_title)
-    zephyros.api.bind('F', ['Cmd', 'Shift'], nudge_window)
-```
-
-#### Go [(docs)](Docs/Go.md)
-
-```go
-package main
-
-import (
-	. "../../Applications/Zephyros.app/Contents/Resources/libs/zephyros_go"
-)
-
-func main() {
-    Bind("D", []string{"Cmd", "Shift"}, func() {
-        Alert("hello world", 1)
-        win := FocusedWindow()
-        frame := win.Frame()
-        frame.X += 10
-        win.SetFrame(frame)
-    })
-
-    ListenForCallbacks()
-}
-```
-
-#### JavaScript / CoffeeScript [(docs)](Docs/JavaScript.md)
-
-```ruby
-bind("D", ["cmd", "shift"], function() {
-  var win = api.focusedWindow()
-  frame = win.frame()
-  frame.x += 10
-  win.setFrame(frame)
-})
-```
-
-#### Using other languages
-
-You can script Zephyros from nearly any language. Just write a client that talks to Zephyros using [this simple protocol](#api).
-
-Here's what people are working on:
-
-- node.js (see [issue 17](../../issues/17))
-
-If you want to do one, please [open an issue](https://github.com/sdegutis/zephyros/issues/new) so we can coordinate. That way nobody does extra work.
-
-#### More configs
-
-* [The author's config](https://github.com/sdegutis/dotfiles/blob/master/stuff/zeph.rb)
-* Look in the [wiki home page](https://github.com/sdegutis/zephyros/wiki) for other people's configs (including a SizeUp emulator)
+1. **How does Zephyros compare to Slate?**
+    - They're both script-oriented and hacker-friendly.
+    - It can be scripted in nearly any language. Slate can only be scripted in JavaScript.
+    - It was originally a fork of Slate but was rewritten for performance and flexibility.
+    - It runs your scripts out-of-process which helps it to be highly stable.
+    - It has a few more events and API calls, and lacks a few of Slate's GUI-specific features.
+    - It's actively maintained.
+2. **How does Zephyros compare to Spectacle/Divvy/SizeUp/Moom/etc?**
+    - It's meant to be scripted. It has a very minimal UI, but a full-featured API.
+    - It's free and open source. Some of the alternatives are neither.
+3. **Isn't it inefficient to have two processes running all the time?**
+    - No.
+4. **Okay, but isn't it inefficient to have them communicating over unix domain sockets?**
+    - No.
+5. **Are you sure?**
+    - Yes.
 
 ### Community
 
@@ -165,14 +75,15 @@ If you want to do one, please [open an issue](https://github.com/sdegutis/zephyr
 
 ### Change log
 
-**NOTE:** This auto-updater won't work if you're on version 3.x or 2.x due to [this security fix](https://github.com/sdegutis/zephyros/pull/21).<br>Instead, [click here to download it](https://raw.github.com/sdegutis/zephyros/master/Builds/Zephyros-LATEST.app.tar.gz).
-
 - HEAD
+    - Performance improvements
+    - Simplifid Zephyros-protocol a little bit
+- 5.0
     - Added protocol-level support for Unix sockets, making it the default
     - Converted all built-in APIs (except Clojure) to connect via the unix socket
-        - **NOTE:** if you're using Clojure, change the Preferences to use TCP and restart Zephyros
     - Adds `unlisten` method to all APIs
     - Adds `modifiers_changed` event to all APIs
+    - Adds `retain` and `release` methods, to keep a handle on a resource for as long as you want (i.e. between callbacks)
 - 4.5.2
     - Added 'focus_changed' event to all APIs
     - Now only keeps (or (get-user-default "MAX_LOGS") 1000) logs

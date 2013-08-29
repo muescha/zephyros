@@ -20,11 +20,7 @@
 
 (defn conn-handler [conn]
   (while (nil? (:exit @conn))
-    (let [msg-size (Integer/parseInt (own-rolled-readline (:in @conn) []))
-          msg-bytes (take msg-size (repeatedly #(let [buf (byte-array [(byte 0)])
-                                                      num-read (.read (:in @conn) buf)]
-                                                  ((vec buf) 0))))
-          msg-str (String. (byte-array msg-bytes) "UTF-8")
+    (let [msg-str (own-rolled-readline (:in @conn) [])
           json (json/read-str msg-str)
           ;; _ (println "GOT" json)
           msg-id (json 0)
@@ -58,11 +54,10 @@
   (let [msg-id (swap! max-msg-id inc)
         json-str (json/write-str (concat [msg-id] args))
         ;; _ (println "SENDING" json-str)
-        json-str-size (count json-str)
         chan (ArrayBlockingQueue. 10)]
     (dosync
      (alter chans assoc msg-id chan))
-    (write conn (format "%s\n%s", json-str-size, json-str))
+    (write conn (format "%s\n" json-str))
     {:kill #(dosync (alter chans dissoc msg-id))
      :get #(second (.take chan))}))
 
@@ -125,6 +120,9 @@
   ([msg duration] (get-one-value top-level-obj "alert" msg duration)))
 
 (defn log [msg] (get-one-value top-level-obj "log" msg))
+
+(defn retain [ref] (get-one-value top-level-obj "retain" ref))
+(defn release [ref] (get-one-value top-level-obj "release" ref))
 
 (defn show-box [msg] (get-one-value top-level-obj "show_box" msg))
 (defn hide-box [] (get-one-value top-level-obj "hide_box"))

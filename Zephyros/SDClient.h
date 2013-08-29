@@ -23,6 +23,8 @@
 
 @property (weak) id<SDClientDelegate> delegate;
 
+@property NSUndoManager* undoManager;
+
 
 
 // for client-proxies

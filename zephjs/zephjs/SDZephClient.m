@@ -97,11 +97,9 @@
 //    NSLog(@"msg %@ = %@", msgIdNum, newMsg);
     
     NSData* msgData = [NSJSONSerialization dataWithJSONObject:newMsg options:0 error:NULL];
-    NSString* msgLength = [NSString stringWithFormat:@"%ld", [msgData length]];
     
-    [self.sock writeData:[msgLength dataUsingEncoding:NSUTF8StringEncoding] withTimeout:3 tag:0];
-    [self.sock writeData:[GCDAsyncSocket LFData] withTimeout:3 tag:0];
     [self.sock writeData:msgData withTimeout:3 tag:0];
+    [self.sock writeData:[GCDAsyncSocket LFData] withTimeout:3 tag:0];
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         if (responses == -1) {
@@ -167,25 +165,18 @@
 }
 
 - (void)socket:(GCDAsyncSocket *)sock didReadData:(NSData *)data withTag:(long)tag {
-    if (tag == 0) {
-        NSString* lenStr = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-        //        NSLog(@"got len: %@", lenStr);
-        [self.sock readDataToLength:[lenStr integerValue] withTimeout:FOREVER tag:1];
-    }
-    else if (tag == 1) {
-        NSArray* msg = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers | NSJSONReadingMutableLeaves error:NULL];
-        id msgId = [msg objectAtIndex:0];
-        id value = [msg objectAtIndex:1];
-        
-        //        NSLog(@"got msg #%@: %@", msgId, value);
-        
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            SDQueue* queue = [self.queues objectForKey:msgId];
-            [queue put:value];
-        });
-        
-        [self waitForNewMessage];
-    }
+    NSArray* msg = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers | NSJSONReadingMutableLeaves error:NULL];
+    id msgId = [msg objectAtIndex:0];
+    id value = [msg objectAtIndex:1];
+    
+//        NSLog(@"got msg #%@: %@", msgId, value);
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        SDQueue* queue = [self.queues objectForKey:msgId];
+        [queue put:value];
+    });
+    
+    [self waitForNewMessage];
 }
 
 @end

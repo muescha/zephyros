@@ -17,9 +17,17 @@
 
 (bind "D" ["Cmd" "Shift"]
       (fn []
+        (alert "hello world" 1)
+        (let [win (get-focused-window)
+              f (get-frame win)
+              f (update-in f [:x] + 10)]
+          (set-frame win f))))
+
+(bind "F" ["Cmd" "Shift"]
+      (fn []
         (alert "hello world" 1)))
 
-@listen-for-callbacks ;; necessary when you use (bind) or (listen)
+@listen-for-callbacks
 ```
 
 #### Run
@@ -136,4 +144,14 @@ The function `bind` and `unbind` uses this [key strings and modifiers](https://g
 (defn next-screen [screen])
 (defn previous-screen [screen])
 (defn rotate-to [screen degrees])
+
+
+;; any resource type
+
+(defn retain [resource])
+(defn release [resource])
+
+;; These methods must be used when you want to keep a refernce around longer than a single callback.
+;; Retain increments the retain-count and release decrements it. When it reaches 0, it will be garbage-collected after 5 seconds.
+;; When you first get a resource back, it starts with a retain-count of 0.
 ```

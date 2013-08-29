@@ -38,3 +38,11 @@ func (self Screen) PreviousScreen() Screen {
 func (self Screen) RotateTo(degrees int) {
 	send(float64(self), nil, false, "rotate_to", degrees)
 }
+
+func (self Screen) Retain() {
+	send(float64(self), nil, false, "retain")
+}
+
+func (self Screen) Release() {
+	send(float64(self), nil, false, "release")
+}

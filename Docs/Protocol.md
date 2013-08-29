@@ -1,8 +1,8 @@
 ### Zephyros Protocol
 
-* Clients connect to Zephyros via TCP
-* All messages are simple JSON arrays
-* Messages in both directions are encoded as `json.bytesize.to_s + "\n" + json`
+* Clients connect to Zephyros using either Unix domain sockets, or TCP at a user-configurable port (defaults to 1235)
+* All messages sent and received are simple JSON arrays
+* Messages in both directions are encoded as `json.to_s + "\n"`
 * Each message to Zephyros will be [msg_id, receiver_id, method, *args]
     * msg_id can be of any type you choose, as long as it's unique per request
     * receiver_id can be windows_id, app_id, or screen_id
@@ -27,11 +27,9 @@ $ rlwrap /Applications/Zephyros.app/Contents/Resources/libs/zepl/zepl
 ->
 ```
 
-It might be easier if `zepl` was a Homebrew package. But one of their rules is that authors shouldn't submit their own tools, someone else has to. Maybe that someone is you? :)
-
 ### Pseudo-sync
 
-Technically the protocol is asynchronous, to allow for callbacks. But it's nicer to just write `win.title()` and have it return the title directly. The pseudo-sync trick solves this problem. This is the basic idea, using Ruby:
+Technically the protocol is asynchronous, to allow for callbacks. But it's nicer to just write `win.title()` and have it return the title directly. The pseudo-sync trick solves this problem. This is the basic idea, using Ruby pseudo-code:
 
 ```ruby
 def send_sync(args)
@@ -87,6 +85,15 @@ see section [Events](#events)
 
 ### Receiver
 
+#### Any receiver type
+
+These are used when you wish to keep a reference around longer than just a callback.
+
+Name     | Args  | Return value
+---------|-------|-------------
+retain   |       |
+release  |       |
+
 #### Window
 
 Name                         | Args         | Return value
@@ -134,8 +141,8 @@ kill9           |      |
 
 Name                          | Args                              | Return value
 ------------------------------|-----------------------------------|--------------
-frame_including_dock_and_menu | {x, y, w, h}                      |
-frame_without_dock_or_menu    | {x, y, w, h}                      |
+frame_including_dock_and_menu |                                   | {x, y, w, h}
+frame_without_dock_or_menu    |                                   | {x, y, w, h}
 previous_screen               |                                   | [screen_id](#screen)
 next_screen                   |                                   | [screen_id](#screen)
 rotate_to                     | degree *(only: 0,90,180, or 270)* |

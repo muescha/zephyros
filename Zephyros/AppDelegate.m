@@ -63,9 +63,13 @@
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
+    NSString* runScript = [[NSUserDefaults standardUserDefaults] stringForKey:SDLaunchCommandDefaultsKey];
+    BOOL usesLeinExec = (runScript != nil) && [runScript rangeOfString:@"lein exec"].location != NSNotFound;
+    
     [[NSUserDefaults standardUserDefaults] registerDefaults:@{
      @"launchCommand": @"ruby ~/zephyros.rb   # or whatever",
                                  SDTCPSocketPortDefaultsKey: @1235,
+                              SDScriptSocketTypeDefaultsKey: @(usesLeinExec ? 1 : 0),
      }];
     
     [self prepareStatusItem];

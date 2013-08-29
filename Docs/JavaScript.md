@@ -1,6 +1,17 @@
 ## Zephyros - JavaScript API
 
-### To run:
+#### Sample Script
+
+```ruby
+bind("D", ["cmd", "shift"], function() {
+  var win = api.focusedWindow()
+  frame = win.frame()
+  frame.x += 10
+  win.setFrame(frame)
+})
+```
+
+#### Run
 
 ```bash
 /Applications/Zephyros.app/Contents/MacOS/zephjs myscript.js
@@ -10,7 +21,7 @@
 /Applications/Zephyros.app/Contents/MacOS/zephjs myscript.coffee
 ```
 
-### API
+#### API
 
 * [Top Level](#top-level)
 * [Type "API"](#type-api)
@@ -176,8 +187,6 @@ property (Number) x
 property (Number) y
 ```
 
-The rest you'll have to look up for yourself.
-
 #### Events
 
 ```coffeescript
@@ -194,3 +203,11 @@ The rest you'll have to look up for yourself.
 'mouse_moved', callback args: (movement) ... see Protocol.md for details
 'modifiers_changed', callback args: (mods) ... see Protocol.md for details
 ```
+
+#### About retain/release
+
+Every resource object (window, screen, app) has two functions, retain() and release().
+
+- These methods must be used when you want to keep a refernce around longer than a single callback.
+- Retain increments the retain-count and release decrements it. When it reaches 0, it will be garbage-collected after 5 seconds.
+- When you first get a resource back, it starts with a retain-count of 0.

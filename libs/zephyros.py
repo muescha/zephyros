@@ -31,21 +31,14 @@ class ZephClient(object):
     def read_forever(self):
         try:
             while True:
-                len_str = ''
+                data = ''
                 while True:
                     in_str = self.sock.recv(1)
                     if in_str == '\n':
                         break
                     if in_str == '':
                         raise RuntimeError("socket connection broken")
-                    len_str += in_str
-
-                len_num = int(len_str)
-                data = ''
-                while len(data) < len_num:
-                    new_data = self.sock.recv(len_num)
-                    len_num -= len(new_data)
-                    data += new_data
+                    data += in_str
 
                 obj = json.loads(data)
                 self.raw_message_queue.put(obj)
@@ -66,7 +59,7 @@ class ZephClient(object):
 
         msg.insert(0, msg_id)
         msg_str = json.dumps(msg)
-        self.send_data_queue.put(str(len(msg_str)) + '\n' + msg_str)
+        self.send_data_queue.put(msg_str + '\n')
 
         if callback is not None:
             def temp_fn():
@@ -132,6 +125,8 @@ class Size(object):
 class Proxy(object):
     def __init__(self, id): self.id = id
     def _send_sync(self, *args): return zeph.send_message([self.id] + list(args))
+    def retain(self): return self._send_sync('retain')
+    def release(self): return self._send_sync('release')
 
 class Window(Proxy):
     def title(self): return self._send_sync('title')

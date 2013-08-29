@@ -5,9 +5,6 @@ import (
 	"net"
 	"bufio"
 	"encoding/json"
-	"strconv"
-	"strings"
-	"io"
 	"os"
 )
 
@@ -28,13 +25,7 @@ var respChans = make(map[float64]chan []byte)
 func ListenForCallbacks() {
 	reader := bufio.NewReader(c)
 	for {
-		numBytes, _ := reader.ReadString('\n')
-		numBytes = strings.Trim(numBytes, "\n")
-		// fmt.Println("bytes", numBytes)
-		i, _ := strconv.ParseUint(numBytes, 10, 64)
-
-		buf := make([]byte, i)
-		io.ReadFull(reader, buf)
+		buf, _ := reader.ReadBytes('\n')
 
 		// fmt.Printf("%#v\n", string(buf))
 
@@ -71,7 +62,7 @@ func send(recv float64, fn func([]byte), infinite bool, method string, args ...i
 	msg := []interface{}{msgid, recv, method}
 	val, _ := json.Marshal(append(msg, args...))
 	jsonstr := string(val)
-	fmt.Fprintf(c, "%v\n%v", len(jsonstr), jsonstr)
+	fmt.Fprintln(c, jsonstr)
 
 	if fn == nil {
 		resp := <-ch

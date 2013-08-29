@@ -10,7 +10,15 @@ import (
 )
 
 func main() {
-	Bind("D", []string{"Cmd", "Shift"}, func() {
+    Bind("D", []string{"Cmd", "Shift"}, func() {
+        Alert("hello world", 1)
+        win := FocusedWindow()
+        frame := win.Frame()
+        frame.X += 10
+        win.SetFrame(frame)
+    })
+
+	Bind("F", []string{"Cmd", "Shift"}, func() {
 		Alert("hello world", 1)
 	})
 

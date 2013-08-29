@@ -14,9 +14,12 @@
 
 @property (weak) SDClient* client;
 @property id receiver;
-@property dispatch_group_t dieGroup;
+@property (copy) void(^whenFinallyDead)();
 
-- (void) delayDeath; // that's all it really is.
+- (void) retainRef;
+- (void) releaseRef;
+
+- (id) withUndo;
 
 - (id) check:(NSArray*)args atIndex:(int)idx forType:(Class)klass inFn:(SEL)fn;
 - (NSArray*) check:(NSArray*)args atIndex:(int)idx forElementType:(Class)klass inFn:(SEL)fn;
