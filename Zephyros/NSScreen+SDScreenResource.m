@@ -6,38 +6,22 @@
 //  Copyright (c) 2013 Giant Robot Software. All rights reserved.
 //
 
-#import "SDScreenProxy.h"
+#import "NSScreen+SDScreenResource.h"
 
 #import "SDGeometry.h"
 
-@implementation SDScreenProxy
-
-+ (SDScreenProxy*) mainScreen {
-    SDScreenProxy* proxy = [[SDScreenProxy alloc] init];
-    proxy.actualScreenObject = [NSScreen mainScreen];
-    return proxy;
-}
-
-+ (NSArray*) allScreens {
-    NSMutableArray* allScreens = [NSMutableArray array];
-    for (NSScreen* screen in [NSScreen screens]) {
-        SDScreenProxy* proxy = [[SDScreenProxy alloc] init];
-        proxy.actualScreenObject = screen;
-        [allScreens addObject:proxy];
-    }
-    return allScreens;
-}
+@implementation NSScreen (SDScreenResource)
 
 - (CGRect) frameIncludingDockAndMenu {
     NSScreen* primaryScreen = [[NSScreen screens] objectAtIndex:0];
-    CGRect f = [self.actualScreenObject frame];
+    CGRect f = [self frame];
     f.origin.y = NSHeight([primaryScreen frame]) - NSHeight(f) - f.origin.y;
     return f;
 }
 
 - (CGRect) frameWithoutDockOrMenu {
     NSScreen* primaryScreen = [[NSScreen screens] objectAtIndex:0];
-    CGRect f = [self.actualScreenObject visibleFrame];
+    CGRect f = [self visibleFrame];
     f.origin.y = NSHeight([primaryScreen frame]) - NSHeight(f) - f.origin.y;
     return f;
 }
@@ -54,7 +38,7 @@
     else if (degrees == 270)
         rotation = kIOScaleRotate0;
     
-    NSRect frame = [self.actualScreenObject frame];
+    NSRect frame = [self frame];
     
     CGDirectDisplayID displays[50];
     CGDisplayCount displayCount;
@@ -70,8 +54,8 @@
     return YES;
 }
 
-- (SDScreenProxy*) nextScreen {
-    NSArray* screens = [SDScreenProxy allScreens];
+- (NSScreen*) nextScreen {
+    NSArray* screens = [NSScreen screens];
     NSUInteger idx = [screens indexOfObject:self];
     
     idx += 1;
@@ -81,8 +65,8 @@
     return [screens objectAtIndex:idx];
 }
 
-- (SDScreenProxy*) previousScreen {
-    NSArray* screens = [SDScreenProxy allScreens];
+- (NSScreen*) previousScreen {
+    NSArray* screens = [NSScreen screens];
     NSUInteger idx = [screens indexOfObject:self];
     
     idx -= 1;
@@ -90,17 +74,6 @@
         idx = [screens count] - 1;
     
     return [screens objectAtIndex:idx];
-}
-
-// delegate equality to underlying NSScreens
-// - maybe this is a terrible idea?
-
-- (BOOL) isEqual:(SDScreenProxy*)object {
-    return [self isKindOfClass:[object class]] && [self.actualScreenObject isEqual:object.actualScreenObject];
-}
-
-- (NSUInteger) hash {
-    return [self.actualScreenObject hash];
 }
 
 @end

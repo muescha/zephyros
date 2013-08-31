@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface SDAppProxy : NSObject
+@interface SDApp : NSObject
 
 - (id) initWithPID:(pid_t)pid;
 - (id) initWithRunningApp:(NSRunningApplication*)app;

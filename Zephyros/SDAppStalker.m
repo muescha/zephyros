@@ -8,7 +8,7 @@
 
 #import "SDAppStalker.h"
 
-#import "SDAppProxy.h"
+#import "SDApp.h"
 
 @interface SDAppStalker ()
 
@@ -30,8 +30,10 @@
 - (void) beginStalking {
     self.apps = [NSMutableArray array];
     
-    for (NSRunningApplication* app in [[NSWorkspace sharedWorkspace] runningApplications]) {
-        [self stalkApp:app];
+    for (NSRunningApplication* runningApp in [[NSWorkspace sharedWorkspace] runningApplications]) {
+        SDApp* app = [[SDApp alloc] initWithRunningApp:runningApp];
+        [self.apps addObject:app];
+        [app startObservingStuff];
     }
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didChangeScreenParams:) name:NSApplicationDidChangeScreenParametersNotification object:nil];
@@ -42,51 +44,48 @@
 
 - (void) appLaunched:(NSNotification*)note {
     NSRunningApplication *launchedApp = [[note userInfo] objectForKey:NSWorkspaceApplicationKey];
-    [self stalkApp:launchedApp];
-}
-
-- (void) appDied:(NSNotification*)note {
-    NSRunningApplication *launchedApp = [[note userInfo] objectForKey:NSWorkspaceApplicationKey];
-    [self unstalkApp:launchedApp];
-}
-
-- (void) didChangeScreenParams:(NSNotification*)note {
-    [[NSNotificationCenter defaultCenter] postNotificationName:SDListenEventScreensChanged
-                                                        object:nil
-                                                      userInfo:nil];
-}
-
-- (void) stalkApp:(NSRunningApplication*)runningApp {
-    SDAppProxy* app = [[SDAppProxy alloc] initWithRunningApp:runningApp];
+    
+    SDApp* app = [[SDApp alloc] initWithRunningApp:launchedApp];
+    [self.apps addObject:app];
+    [app startObservingStuff];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:SDListenEventAppOpened
                                                         object:nil
                                                       userInfo:@{@"thing": app}];
-    
-    [self.apps addObject:app];
-    [app startObservingStuff];
 }
 
-- (void) unstalkApp:(NSRunningApplication*)deadApp {
-    SDAppProxy* app;
-    for (SDAppProxy* couldBeThisApp in self.apps) {
+- (void) appDied:(NSNotification*)note {
+    NSRunningApplication *deadApp = [[note userInfo] objectForKey:NSWorkspaceApplicationKey];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:SDListenEventAppClosed
+                                                        object:nil
+                                                      userInfo:@{@"thing": [[SDApp alloc] initWithRunningApp:deadApp]}];
+    
+    SDApp* app;
+    for (SDApp* couldBeThisApp in self.apps) {
         if ([deadApp processIdentifier] == couldBeThisApp.pid) {
             app = couldBeThisApp;
             break;
         }
     }
     
-    if (!app) {
-        NSLog(@"uhh... ok?");
+    if (app) {
+        [app stopObservingStuff];
+        [self.apps removeObject:app];
+    }
+    else {
+        NSLog(@"This app died, but we have no record of ever storing it internally, even though we should have: name = %@, pid = %d, ident = %@",
+              [deadApp localizedName],
+              [deadApp processIdentifier],
+              [deadApp bundleIdentifier]);
         return;
     }
-    
-    [app stopObservingStuff];
-    [self.apps removeObject:app];
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:SDListenEventAppClosed
+}
+
+- (void) didChangeScreenParams:(NSNotification*)note {
+    [[NSNotificationCenter defaultCenter] postNotificationName:SDListenEventScreensChanged
                                                         object:nil
-                                                      userInfo:@{@"thing": app}];
+                                                      userInfo:nil];
 }
 
 @end

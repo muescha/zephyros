@@ -46,106 +46,40 @@ You typically write a script that binds global hot keys to do stuff, like moving
 - [Using JavaScript](Docs/JavaScript.md)
 - [Using CoffeeScript](Docs/CoffeeScript.md)
 
-**Note:** all the languages use the same simple [underlying API](Docs/Protocol.md).
+**Note:** all the languages use the same simple [underlying protocol](Docs/Protocol.md).
 
 * The [wiki home page](https://github.com/sdegutis/zephyros/wiki) has other people's configs, configs that emulate apps, and useful tricks
 
 #### Frequently Asked Questions
 
-1. **How does Zephyros compare to Slate?**
-    - They're both script-oriented and hacker-friendly.
-    - It can be scripted in nearly any language. Slate can only be scripted in JavaScript.
-    - It was originally a fork of Slate but was rewritten for performance and flexibility.
-    - It runs your scripts out-of-process which helps it to be highly stable.
-    - It has a few more events and API calls, and lacks a few of Slate's GUI-specific features.
-    - It's actively maintained.
-2. **How does Zephyros compare to Spectacle/Divvy/SizeUp/Moom/etc?**
-    - It's meant to be scripted. It has a very minimal UI, but a full-featured API.
-    - It's free and open source. Some of the alternatives are neither.
-3. **Isn't it inefficient to have two processes running all the time?**
-    - No.
-4. **Okay, but isn't it inefficient to have them communicating over unix domain sockets?**
-    - No.
-5. **Are you sure?**
-    - Yes.
+1. How does Zephyros compare to Slate?
 
-### Community
+   Zephyros was originally a fork of Slate, but was rewritten for
+   performance and stability improvements, and flexibility. One
+   benefit is that Zephyros can be scripted in many languages, whereas
+   Slate can only be scripted in JavaScript. Zephyros has a few more
+   API calls and listen-able events, but lacks a few of Slate's
+   GUI-specific features.
 
-- #zephyros on irc.freenode.org
+2. How does Zephyros compare to Spectacle / Divvy / SizeUp / Moom / AppGrid / etc?
+
+   Zephyros just gives you an API which you can use to build up your
+   own functionality for managing your windows however you'd
+   like. Your script can be as minimal or as complex as you want,
+   since it's really just a program written in your favorite language
+   that controls Zephyros. Also, Zephyros is free, open source, and
+   actively maintained. Some of the alternatives are neither.
+
+3. Isn't it inefficient to have two processes running all the time?
+
+   Nope. Compare
+   [Chrome's usage after opening one window](https://raw.github.com/sdegutis/zephyros/master/Graphics/chrome-usage.png)
+   and
+   [Zephyros's usage after moving some windows around](https://raw.github.com/sdegutis/zephyros/master/Graphics/zephyros-usage.png).
 
 ### Change log
 
-- HEAD
-    - Performance improvements
-    - Simplifid Zephyros-protocol a little bit
-- 5.0
-    - Added protocol-level support for Unix sockets, making it the default
-    - Converted all built-in APIs (except Clojure) to connect via the unix socket
-    - Adds `unlisten` method to all APIs
-    - Adds `modifiers_changed` event to all APIs
-    - Adds `retain` and `release` methods, to keep a handle on a resource for as long as you want (i.e. between callbacks)
-- 4.5.2
-    - Added 'focus_changed' event to all APIs
-    - Now only keeps (or (get-user-default "MAX_LOGS") 1000) logs
-    - Now only pops up log window for error
-    - New menubar icon, courtesy of [danielepolencic](https://github.com/danielepolencic/)
-    - New app icon based on the new menubar icon
-    - Removes that lame meme joke
-- 4.5.1
-    - More resilient to script errors
-    - Added `screen.rotate_to` to all APIs
-    - Various fixes and improvements
-- 4.5
-    - Added `zepl` tool for communicating with Zephyros via plain JSON
-        - Use it with `rlwrap` (from homebrew) for best results
-    - Several UI improvements
-    - Added `show_box(str)` and `hide_box` to all APIs
-    - Added `mouse_moved` listenable-event
-    - Better API error-reporting
-    - Makes sure auto-launched process dies when Zephyros exits
-- 4.4.1
-    - Ruby API handles UTF-8 strings properly
-- 4.4
-    - Changed Go API to just use top-level functions for API
-    - Ruby API now works with Ruby 1.8
-    - Adds `unbind` to all APIs
-    - Changed Log window to be always-on-top
-    - Log window shows seconds in timestamp
-- 4.3
-    - Many bug fixes and improvements
-    - Added `window.other_windows_on_same_screen` and `window.other_windows_on_all_screens` to all APIs
-    - Added `window.windows_to_{south,north,east,west}` to all APIs
-    - Added `update_settings` to all APIs
-- 4.2
-    - Includes new Python API
-- 4.1
-    - Re-adds JavaScript/CoffeeScript API
-    - Adds support for dvorak and other keyboard layouts (thanks jballanc)
-    - Only listens for clients on localhost
-    - Many improvements and stability fixes
-- 4.0
-    - Removes JavaScript/CoffeeScript API (re-added in 4.1)
-    - Includes new Clojure API
-    - Includes new Go API
-    - Adds support for any language that can speak JSON over TCP
-    - Slight changes to Ruby API
-- 3.1
-    - Added a fuzzy-matching `choose_from` method to the Ruby API (it's pretty sweet)
-- 3.0
-    - Added a Ruby 2.0 API
-    - Changed JS API:
-        - any function that returned a CGRect now returns a hash, keys `'x', 'y', 'w', 'h'`
-        - any function that returned a CGPoint now returns a hash, keys `'x', 'y'`
-        - any function that returned a CGSize now returns a hash, keys `'w', 'h'`
-        - adds functions `SDMinX`, `SDMinY`, `SDMaxX`, `SDMaxY`, `SDRectMake`, `SDInsetRect`, `SDIntegralRect`
-- 2.7
-    - Broke the Log window's REPL (fixed in 3.0)
-    - Less dumb way of choosing configs (uses UI this time)
-    - Added a non-functioning Ruby option
-- 2.6.1
-    - Added 'screens_changed' event
-- 2.6
-    - First version anyone should care about
+[Moved here.](change-log.txt)
 
 ### Special Thanks
 

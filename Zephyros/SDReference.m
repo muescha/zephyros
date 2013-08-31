@@ -6,40 +6,32 @@
 //  Copyright (c) 2013 Giant Robot Software. All rights reserved.
 //
 
-#import "SDClientProxy.h"
+#import "SDReference.h"
 
 #import "SDLogWindowController.h"
 
-@interface SDClientProxy ()
+@implementation SDReference
 
-@property int refRetainCount;
+- (void) dealloc {
+//    NSLog(@"ref was deallocated: %@", self.resource);
+    [[self.client undoManager] removeAllActionsWithTarget:self];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 
-@end
+- (BOOL) isEqual:(SDReference*)other {
+    return ([self isKindOfClass: [other class]] &&
+            [self.resource isEqual: other.resource]);
+}
 
-@implementation SDClientProxy
-
-- (void) reallyDie {
-    self.whenFinallyDead();
+- (NSUInteger) hash {
+    return [self.resource hash];
 }
 
 - (id) withUndo {
-    [self retainRef];
-    [self releaseRef];
     return [[self.client undoManager] prepareWithInvocationTarget:self];
 }
 
-- (void) retainRef {
-    [[self class] cancelPreviousPerformRequestsWithTarget:self selector:@selector(reallyDie) object:nil];
-    
-    self.refRetainCount++;
-}
-
-- (void) releaseRef {
-    self.refRetainCount--;
-    
-    if (self.refRetainCount == 0) {
-        [self performSelector:@selector(reallyDie) withObject:nil afterDelay:5.0];
-    }
+- (void) whenDead:(void(^)())block {
 }
 
 - (id) check:(NSArray*)args atIndex:(int)idx forType:(Class)klass inFn:(SEL)fn {
@@ -90,14 +82,10 @@
     return obj;
 }
 
-- (id) retain:(NSArray*)args msgID:(id)msgID {
-    [self retainRef];
-    return nil;
-}
-
-- (id) release:(NSArray*)args msgID:(id)msgID {
-    [self releaseRef];
-    return nil;
++ (id) withResource:(id)resource {
+    SDReference* ref = [[self alloc] init];
+    ref.resource = resource;
+    return ref;
 }
 
 @end

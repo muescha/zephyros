@@ -63,6 +63,8 @@
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
+    [self prepareStatusItem];
+    
     NSString* runScript = [[NSUserDefaults standardUserDefaults] stringForKey:SDLaunchCommandDefaultsKey];
     BOOL usesLeinExec = (runScript != nil) && [runScript rangeOfString:@"lein exec"].location != NSNotFound;
     
@@ -71,8 +73,6 @@
                                  SDTCPSocketPortDefaultsKey: @1235,
                               SDScriptSocketTypeDefaultsKey: @(usesLeinExec ? 1 : 0),
      }];
-    
-    [self prepareStatusItem];
     
     [[SDClientListener sharedListener] startListening];
     [[SDConfigLauncher sharedConfigLauncher] launchConfigMaybe];

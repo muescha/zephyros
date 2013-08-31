@@ -8,18 +8,13 @@
 
 #import <Foundation/Foundation.h>
 
-@interface SDScreenProxy : NSObject
-
-@property (strong) NSScreen* actualScreenObject;
-
-+ (SDScreenProxy*) mainScreen;
-+ (NSArray*) allScreens;
+@interface NSScreen (SDScreenResource)
 
 - (CGRect) frameIncludingDockAndMenu;
 - (CGRect) frameWithoutDockOrMenu;
 
-- (SDScreenProxy*) nextScreen;
-- (SDScreenProxy*) previousScreen;
+- (NSScreen*) nextScreen;
+- (NSScreen*) previousScreen;
 
 - (BOOL) rotateTo:(int)degrees;
 

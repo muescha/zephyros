@@ -6,12 +6,12 @@
 //  Copyright (c) 2013 Giant Robot Software. All rights reserved.
 //
 
-#import "SDClientProxy.h"
+#import "SDReference.h"
 
-#import "SDWindowProxy.h"
+#import "SDWindow.h"
 
-@interface SDWindowClientProxy : SDClientProxy
+@interface SDWindowRef : SDReference
 
-@property SDWindowProxy* receiver;
+@property SDWindow* resource;
 
 @end

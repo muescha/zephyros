@@ -1,6 +1,6 @@
 <item>
   <title>Version <%version%></title>
-  <sparkle:releaseNotesLink>https://github.com/sdegutis/zephyros#change-log</sparkle:releaseNotesLink>
+  <sparkle:releaseNotesLink>https://raw.github.com/sdegutis/zephyros/master/change-log.txt</sparkle:releaseNotesLink>
   <pubDate><%date%></pubDate>
   <enclosure url="https://raw.github.com/sdegutis/zephyros/master/Builds/Zephyros-<%version%>.app.tar.gz"
              sparkle:version="<%version%>"

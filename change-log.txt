@@ -1,0 +1,88 @@
+HEAD
+    - Performance improvements
+    - Simplifid Zephyros-protocol a little bit
+    - References now last as long as the resource they refer to exists
+    - Removed the newly-unnecessary `retain` and `release` methods
+
+5.0
+    - Added protocol-level support for Unix sockets, making it the default
+    - Converted all built-in APIs (except Clojure) to connect via the unix socket
+    - Adds `unlisten` method to all APIs
+    - Adds `modifiers_changed` event to all APIs
+    - Adds `retain` and `release` methods, to keep a handle on a resource for as long as you want (i.e. between callbacks)
+
+4.5.2
+    - Added 'focus_changed' event to all APIs
+    - Now only keeps (or (get-user-default "MAX_LOGS") 1000) logs
+    - Now only pops up log window for error
+    - New menubar icon, courtesy of danielepolencic (https://github.com/danielepolencic/)
+    - New app icon based on the new menubar icon
+    - Removes that lame meme joke
+
+4.5.1
+    - More resilient to script errors
+    - Added `screen.rotate_to` to all APIs
+    - Various fixes and improvements
+
+4.5
+    - Added `zepl` tool for communicating with Zephyros via plain JSON
+        - Use it with `rlwrap` (from homebrew) for best results
+    - Several UI improvements
+    - Added `show_box(str)` and `hide_box` to all APIs
+    - Added `mouse_moved` listenable-event
+    - Better API error-reporting
+    - Makes sure auto-launched process dies when Zephyros exits
+
+4.4.1
+    - Ruby API handles UTF-8 strings properly
+
+4.4
+    - Changed Go API to just use top-level functions for API
+    - Ruby API now works with Ruby 1.8
+    - Adds `unbind` to all APIs
+    - Changed Log window to be always-on-top
+    - Log window shows seconds in timestamp
+
+4.3
+    - Many bug fixes and improvements
+    - Added `window.other_windows_on_same_screen` and `window.other_windows_on_all_screens` to all APIs
+    - Added `window.windows_to_{south,north,east,west}` to all APIs
+    - Added `update_settings` to all APIs
+
+4.2
+    - Includes new Python API
+
+4.1
+    - Re-adds JavaScript/CoffeeScript API
+    - Adds support for dvorak and other keyboard layouts (thanks jballanc)
+    - Only listens for clients on localhost
+    - Many improvements and stability fixes
+
+4.0
+    - Removes JavaScript/CoffeeScript API (re-added in 4.1)
+    - Includes new Clojure API
+    - Includes new Go API
+    - Adds support for any language that can speak JSON over TCP
+    - Slight changes to Ruby API
+
+3.1
+    - Added a fuzzy-matching `choose_from` method to the Ruby API (it's pretty sweet)
+
+3.0
+    - Added a Ruby 2.0 API
+    - Changed JS API:
+        - any function that returned a CGRect now returns a hash, keys `'x', 'y', 'w', 'h'`
+        - any function that returned a CGPoint now returns a hash, keys `'x', 'y'`
+        - any function that returned a CGSize now returns a hash, keys `'w', 'h'`
+        - adds functions `SDMinX`, `SDMinY`, `SDMaxX`, `SDMaxY`, `SDRectMake`, `SDInsetRect`, `SDIntegralRect`
+
+2.7
+    - Broke the Log window's REPL (fixed in 3.0)
+    - Less dumb way of choosing configs (uses UI this time)
+    - Added a non-functioning Ruby option
+
+2.6.1
+    - Added 'screens_changed' event
+
+2.6
+    - First version anyone should care about

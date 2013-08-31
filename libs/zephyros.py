@@ -125,8 +125,6 @@ class Size(object):
 class Proxy(object):
     def __init__(self, id): self.id = id
     def _send_sync(self, *args): return zeph.send_message([self.id] + list(args))
-    def retain(self): return self._send_sync('retain')
-    def release(self): return self._send_sync('release')
 
 class Window(Proxy):
     def title(self): return self._send_sync('title')

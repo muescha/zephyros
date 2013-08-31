@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+@class SDReference;
+
 @protocol SDClientDelegate <NSObject>
 
 - (void) sendResponse:(id)msg;
@@ -26,9 +28,9 @@
 @property NSUndoManager* undoManager;
 
 
-
-// for client-proxies
+// for refs:
 
 - (void) sendResponse:(id)result forID:(NSNumber*)msgID;
+- (id) store:(SDReference*)ref;
 
 @end

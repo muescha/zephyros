@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Giant Robot Software. All rights reserved.
 //
 
-#import "SDTopLevelClientProxy.h"
+#import "SDTopLevelRef.h"
 
 #import "SDHotKey.h"
 #import "SDEventListener.h"
@@ -19,16 +19,22 @@
 #import "SDLogWindowController.h"
 #import "SDBoxWindowController.h"
 
-#import "SDWindowProxy.h"
+#import "SDWindow.h"
 
-@interface SDTopLevelClientProxy ()
+#import "SDWindowRef.h"
+#import "SDScreenRef.h"
+#import "SDAppRef.h"
+
+#import "MACollectionUtilities.h"
+
+@interface SDTopLevelRef ()
 
 @property NSMutableArray* hotkeys;
 @property NSMutableArray* listeners;
 
 @end
 
-@implementation SDTopLevelClientProxy
+@implementation SDTopLevelRef
 
 - (id) init {
     if (self = [super init]) {
@@ -36,14 +42,6 @@
         self.listeners = [NSMutableArray array];
     }
     return self;
-}
-
-- (void) retainRef {
-    // no-op
-}
-
-- (void) releaseRef {
-    // no-op
 }
 
 - (void) destroy {
@@ -60,12 +58,12 @@
 
 - (id) undo:(NSArray*)args msgID:(id)msgID {
     [[self.client undoManager] undo];
-    return nil;
+    return [NSNull null];
 }
 
 - (id) redo:(NSArray*)args msgID:(id)msgID {
     [[self.client undoManager] redo];
-    return nil;
+    return [NSNull null];
 }
 
 - (id) bind:(NSArray*)args msgID:(id)msgID {
@@ -78,7 +76,7 @@
     hotkey.key = [key uppercaseString];
     hotkey.modifiers = [mods valueForKeyPath:@"uppercaseString"];
     hotkey.fn = ^{
-        [self.client sendResponse:nil forID:msgID];
+        [self.client sendResponse:[NSNull null] forID:msgID];
     };
     
     if ([hotkey bind]) {
@@ -128,10 +126,30 @@
         [[SDModifierKeysListener sharedListener] startListening];
     }
     
+    __weak SDTopLevelRef* _self = self;
+    
     SDEventListener* listener = [[SDEventListener alloc] init];
     listener.eventName = event;
     listener.fn = ^(id thing) {
-        [self.client sendResponse:thing forID:msgID];
+        id ref;
+        
+        if (thing == nil) {
+            ref = [NSNull null];
+        }
+        else if ([thing isKindOfClass:[SDWindow self]]) {
+            ref = [_self.client store: [SDWindowRef withResource: thing]];
+        }
+        else if ([thing isKindOfClass:[SDApp self]]) {
+            ref = [_self.client store: [SDAppRef withResource: thing]];
+        }
+        else if ([thing isKindOfClass:[NSScreen self]]) {
+            ref = [_self.client store: [SDScreenRef withResource: thing]];
+        }
+        else {
+            ref = thing;
+        }
+        
+        [_self.client sendResponse:ref forID:msgID];
     };
     
     [listener startListening];
@@ -153,12 +171,12 @@
         }
     }
     
-    return nil;
+    return [NSNull null];
 }
 
 - (id) relaunch_config:(NSArray*)args msgID:(id)msgID {
     [[SDConfigLauncher sharedConfigLauncher] launchConfigMaybe];
-    return nil;
+    return [NSNull null];
 }
 
 - (id) update_settings:(NSArray*)args msgID:(id)msgID {
@@ -172,7 +190,7 @@
     if ([defaultDuration isKindOfClass: [NSNumber self]])
         [SDAlerts sharedAlerts].alertDisappearDelay = [defaultDuration doubleValue];
     
-    return nil;
+    return [NSNull null];
 }
 
 - (id) clipboard_contents:(NSArray*)args msgID:(id)msgID {
@@ -180,27 +198,27 @@
 }
 
 - (id) focused_window:(NSArray*)args msgID:(id)msgID {
-    return [SDWindowProxy focusedWindow];
+    return [self.client store: [SDWindowRef withResource: [SDWindow focusedWindow]]];
 }
 
 - (id) visible_windows:(NSArray*)args msgID:(id)msgID {
-    return [SDWindowProxy visibleWindows];
+    return MAP([SDWindow visibleWindows], [self.client store: [SDWindowRef withResource: obj]]);
 }
 
 - (id) all_windows:(NSArray*)args msgID:(id)msgID {
-    return [SDWindowProxy allWindows];
+    return MAP([SDWindow allWindows], [self.client store: [SDWindowRef withResource: obj]]);
 }
 
 - (id) main_screen:(NSArray*)args msgID:(id)msgID {
-    return [SDScreenProxy mainScreen];
+    return [self.client store: [SDScreenRef withResource: [NSScreen mainScreen]]];
 }
 
 - (id) all_screens:(NSArray*)args msgID:(id)msgID {
-    return [SDScreenProxy allScreens];
+    return MAP([NSScreen screens], [self.client store: [SDScreenRef withResource: obj]]);
 }
 
 - (id) running_apps:(NSArray*)args msgID:(id)msgID {
-    return [SDAppProxy runningApps];
+    return MAP([SDApp runningApps], [self.client store: [SDAppRef withResource: obj]]);
 }
 
 - (id) log:(NSArray*)args msgID:(id)msgID {
@@ -208,7 +226,7 @@
     
     [[SDLogWindowController sharedLogWindowController] log:str
                                                       type:SDLogMessageTypeUser];
-    return nil;
+    return [NSNull null];
 }
 
 - (id) alert:(NSArray*)args msgID:(id)msgID {
@@ -223,18 +241,18 @@
                              duration:[duration doubleValue]];
     }
     
-    return nil;
+    return [NSNull null];
 }
 
 - (id) show_box:(NSArray*)args msgID:(id)msgID {
     SDTypeCheckArg(NSString, text, 0);
     [[SDBoxWindowController sharedBox] showWithText:text];
-    return nil;
+    return [NSNull null];
 }
 
 - (id) hide_box:(NSArray*)args msgID:(id)msgID {
     [[SDBoxWindowController sharedBox] hide];
-    return nil;
+    return [NSNull null];
 }
 
 - (id) choose_from:(NSArray*)args msgID:(id)msgID {

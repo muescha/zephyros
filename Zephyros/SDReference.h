@@ -10,14 +10,14 @@
 
 #import "SDClient.h"
 
-@interface SDClientProxy : NSObject
+@interface SDReference : NSObject
 
 @property (weak) SDClient* client;
-@property id receiver;
-@property (copy) void(^whenFinallyDead)();
+@property id resource;
 
-- (void) retainRef;
-- (void) releaseRef;
+- (void) whenDead:(void(^)())block;
+
++ (id) withResource:(id)resource;
 
 - (id) withUndo;
 

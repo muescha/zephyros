@@ -121,9 +121,6 @@
 
 (defn log [msg] (get-one-value top-level-obj "log" msg))
 
-(defn retain [ref] (get-one-value top-level-obj "retain" ref))
-(defn release [ref] (get-one-value top-level-obj "release" ref))
-
 (defn show-box [msg] (get-one-value top-level-obj "show_box" msg))
 (defn hide-box [] (get-one-value top-level-obj "hide_box"))
 

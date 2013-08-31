@@ -49,11 +49,3 @@ func (self App) Kill() {
 func (self App) Kill9() {
 	send(float64(self), nil, false, "kill9")
 }
-
-func (self App) Retain() {
-	send(float64(self), nil, false, "retain")
-}
-
-func (self App) Release() {
-	send(float64(self), nil, false, "release")
-}
