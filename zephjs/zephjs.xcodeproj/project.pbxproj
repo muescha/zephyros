@@ -255,6 +255,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/zephjs\"",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -273,6 +274,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/zephjs\"",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
