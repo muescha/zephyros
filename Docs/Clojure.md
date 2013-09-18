@@ -85,6 +85,9 @@ The function `bind` and `unbind` uses this [key strings and modifiers](https://g
 (defn relaunch-config [])
 (defn get-clipboard-contents [])
 
+(defn undo [])
+(defn redo [])
+
 
 ;; window
 

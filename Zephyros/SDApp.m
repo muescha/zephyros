@@ -11,8 +11,6 @@
 #import "SDWindow.h"
 #import "SDUniversalAccessHelper.h"
 
-#import "SDWindow.h"
-
 #import "SDAppStalker.h"
 
 #import "SDObserver.h"

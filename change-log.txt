@@ -1,8 +1,19 @@
-HEAD
+5.2
+    - Adds undo/redo last window movement to all APIs
+    - Adds settings for changing show_box's font
+    - More completely fixing the aforementioned race condition
+
+5.1.1
+    - Fixed a not-so-theoretical race condition which
+      caused Zephyros to crash pretty easily.
+
+5.1
     - Performance improvements
     - Simplifid Zephyros-protocol a little bit
-    - References now last as long as the resource they refer to exists
-    - Removed the newly-unnecessary `retain` and `release` methods
+    - Removed `retain` and `release` methods
+        - References are now valid as long as the resource they refer to exists
+    - Some bug fixes (thanks @richo and @bwinton)
+    - Adds Chicken Scheme API (written by @richo)
 
 5.0
     - Added protocol-level support for Unix sockets, making it the default

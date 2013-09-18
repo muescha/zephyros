@@ -28,27 +28,29 @@ static NSMutableDictionary *relocatableKeys;
     relocatableKeys = [[NSMutableDictionary alloc] init];
     
     TISInputSourceRef currentKeyboard = TISCopyCurrentKeyboardInputSource();
-    CFDataRef layoutData = TISGetInputSourceProperty(currentKeyboard,
-                                                     kTISPropertyUnicodeKeyLayoutData);
-    const UCKeyboardLayout *keyboardLayout = (const UCKeyboardLayout *)CFDataGetBytePtr(layoutData);
-    UInt32 keysDown = 0;
-    UniChar chars[4];
-    UniCharCount realLength;
+    CFDataRef layoutData = TISGetInputSourceProperty(currentKeyboard, kTISPropertyUnicodeKeyLayoutData);
     
-    for (int i = 0 ; i < sizeof(relocatableKeyCodes)/sizeof(relocatableKeyCodes[0]) ; i++) {
-        UCKeyTranslate(keyboardLayout,
-                       relocatableKeyCodes[i],
-                       kUCKeyActionDisplay,
-                       0,
-                       LMGetKbdType(),
-                       kUCKeyTranslateNoDeadKeysBit,
-                       &keysDown,
-                       sizeof(chars) / sizeof(chars[0]),
-                       &realLength,
-                       chars);
+    if (layoutData) {
+        const UCKeyboardLayout *keyboardLayout = (const UCKeyboardLayout *)CFDataGetBytePtr(layoutData);
+        UInt32 keysDown = 0;
+        UniChar chars[4];
+        UniCharCount realLength;
         
-        [relocatableKeys setObject:[NSNumber numberWithInt:relocatableKeyCodes[i]]
-                            forKey:[NSString stringWithCharacters:chars length:1]];
+        for (int i = 0 ; i < sizeof(relocatableKeyCodes)/sizeof(relocatableKeyCodes[0]) ; i++) {
+            UCKeyTranslate(keyboardLayout,
+                           relocatableKeyCodes[i],
+                           kUCKeyActionDisplay,
+                           0,
+                           LMGetKbdType(),
+                           kUCKeyTranslateNoDeadKeysBit,
+                           &keysDown,
+                           sizeof(chars) / sizeof(chars[0]),
+                           &realLength,
+                           chars);
+            
+            [relocatableKeys setObject:[NSNumber numberWithInt:relocatableKeyCodes[i]]
+                                forKey:[NSString stringWithCharacters:chars length:1]];
+        }
     }
     
     CFRelease(currentKeyboard);

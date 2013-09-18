@@ -13,7 +13,7 @@
 
 *The OS X window manager for hackers*
 
-* Current version: **5.0**
+* Current version: **5.2**
 * Requires: OS X 10.7 and up
 * Download: get [.zip file](https://raw.github.com/sdegutis/zephyros/master/Builds/Zephyros-LATEST.app.tar.gz), unzip, right-click app, choose "Open"
 
@@ -45,6 +45,8 @@ You typically write a script that binds global hot keys to do stuff, like moving
 - [Using Go](Docs/Go.md)
 - [Using JavaScript](Docs/JavaScript.md)
 - [Using CoffeeScript](Docs/CoffeeScript.md)
+- [Using Node.js](https://github.com/danielepolencic/zephyros)
+- [Using CHICKEN Scheme](Docs/Scheme.md)
 
 **Note:** all the languages use the same simple [underlying protocol](Docs/Protocol.md).
 
@@ -87,6 +89,7 @@ You typically write a script that binds global hot keys to do stuff, like moving
 - To [muescha](https://github.com/muescha), for the constant flow of feature requests, pull requests, and bug reports
 - To [danielepolencic](https://github.com/danielepolencic/), for the new menu bar icon
 - To [jdiehl](https://github.com/jdiehl/), for [his unix-sockets version of CocoaAsyncSocket](https://github.com/jdiehl/CocoaAsyncSocket/tree/socketUN)
+- To [richo](https://github.com/richo/), for the Chicken Scheme API
 - To everyone. You're great!
 
 ### License

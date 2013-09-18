@@ -58,17 +58,17 @@
     
     if ([msgID isEqual:[NSNull null]]) {
         SDLogError(@"API error: invalid message id: %@", msgID);
-        [self sendResponse:[NSNull null] forID:msgID];
+        [self sendResponse:@"__api_exception__" forID:msgID];
         return;
     }
     
     id recvID = [msg objectAtIndex:1];
     
-    NSString* meth = [msg objectAtIndex:2];
+    NSString* methName = [msg objectAtIndex:2];
     
-    if (![meth isKindOfClass:[NSString self]] || [[meth stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length] == 0) {
-        SDLogError(@"API error: invalid method name: %@", meth);
-        [self sendResponse:[NSNull null] forID:msgID];
+    if (![methName isKindOfClass:[NSString self]] || [[methName stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length] == 0) {
+        SDLogError(@"API error: invalid method name: %@", methName);
+        [self sendResponse:@"__api_exception__" forID:msgID];
         return;
     }
     
@@ -77,15 +77,15 @@
     
     if (recv == nil) {
         SDLogError(@"API Error: Could not find resource with ID %@", recvID);
-        [self sendResponse:[NSNull null] forID:msgID];
+        [self sendResponse:@"__api_exception__" forID:msgID];
         return;
     }
     
-    SEL sel = NSSelectorFromString([[meth stringByReplacingOccurrencesOfString:@"?" withString:@"_q"] stringByAppendingString:@":msgID:"]);
+    SEL sel = NSSelectorFromString([[methName stringByReplacingOccurrencesOfString:@"?" withString:@"_q"] stringByAppendingString:@":msgID:"]);
     
     if (![recv respondsToSelector:sel]) {
-        SDLogError(@"API Error: Could not find method %@.%@", [recv className], meth);
-        [self sendResponse:[NSNull null] forID:msgID];
+        SDLogError(@"API Error: Could not find method %@.%@", [recv className], methName);
+        [self sendResponse:@"__api_exception__" forID:msgID];
         return;
     }
     

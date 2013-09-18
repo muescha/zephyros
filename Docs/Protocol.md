@@ -65,6 +65,8 @@ show_box           | msg                                     |
 hide_box           |                                         |
 choose_from        | list, title, lines_tall, chars_wide     | 0, followed by: chosen index or nil if canceled
 update_settings    | map of strings to values *(see note 3)* |
+undo               |                                         |
+redo               |                                         |
 
 
 ##### note 1: Key Strings and modifiers
@@ -79,9 +81,14 @@ see section [Events](#events)
 
 ##### note 3: Settings
 
-```ruby
-{:alert_should_animate => false, :alert_default_delay => 0.5}
-```
+Key                  | Value type
+---------------------|---------------------
+alert_should_animate | bool
+alert_default_delay  | double (seconds)
+box_font_name        | string
+box_font_size        | double (point size)
+
+Multiple key/value pairs can be updated simultaneously.
 
 ### Receiver
 

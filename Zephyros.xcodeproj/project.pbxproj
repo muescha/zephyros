@@ -10,7 +10,7 @@
 		9435A4D417AEDCC700754D27 /* zephjs in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9435A4D017AEDB3D00754D27 /* zephjs */; };
 		943921BA1719B1EE00F63073 /* statusitem.png in Resources */ = {isa = PBXBuildFile; fileRef = 943921B61719B1EE00F63073 /* statusitem.png */; };
 		943921BD1719B1EE00F63073 /* statusitem@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 943921B91719B1EE00F63073 /* statusitem@2x.png */; };
-		94454B33171B31AC003EF64E /* NSScreen+SDScreenResource.m in Sources */ = {isa = PBXBuildFile; fileRef = 94454B32171B31AC003EF64E /* NSScreen+SDScreenResource.m */; };
+		94454B33171B31AC003EF64E /* NSScreen+SilicaExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 94454B32171B31AC003EF64E /* NSScreen+SilicaExtension.m */; };
 		94454B37171B4179003EF64E /* SDAlertWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 94454B35171B4179003EF64E /* SDAlertWindowController.m */; };
 		94454B38171B4179003EF64E /* AlertWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 94454B36171B4179003EF64E /* AlertWindow.xib */; };
 		94454B3F171B479B003EF64E /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94454B3E171B479B003EF64E /* QuartzCore.framework */; };
@@ -120,8 +120,8 @@
 		9435A4CB17AEDB3C00754D27 /* zephjs.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = zephjs.xcodeproj; path = zephjs/zephjs.xcodeproj; sourceTree = "<group>"; };
 		943921B61719B1EE00F63073 /* statusitem.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = statusitem.png; sourceTree = "<group>"; };
 		943921B91719B1EE00F63073 /* statusitem@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "statusitem@2x.png"; sourceTree = "<group>"; };
-		94454B31171B31AC003EF64E /* NSScreen+SDScreenResource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSScreen+SDScreenResource.h"; sourceTree = "<group>"; };
-		94454B32171B31AC003EF64E /* NSScreen+SDScreenResource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSScreen+SDScreenResource.m"; sourceTree = "<group>"; };
+		94454B31171B31AC003EF64E /* NSScreen+SilicaExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSScreen+SilicaExtension.h"; sourceTree = "<group>"; };
+		94454B32171B31AC003EF64E /* NSScreen+SilicaExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSScreen+SilicaExtension.m"; sourceTree = "<group>"; };
 		94454B34171B4179003EF64E /* SDAlertWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDAlertWindowController.h; sourceTree = "<group>"; };
 		94454B35171B4179003EF64E /* SDAlertWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDAlertWindowController.m; sourceTree = "<group>"; };
 		94454B36171B4179003EF64E /* AlertWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlertWindow.xib; sourceTree = "<group>"; };
@@ -514,8 +514,8 @@
 			children = (
 				94873F6B171937BC000AC0A6 /* SDWindow.h */,
 				94873F6C171937BC000AC0A6 /* SDWindow.m */,
-				94454B31171B31AC003EF64E /* NSScreen+SDScreenResource.h */,
-				94454B32171B31AC003EF64E /* NSScreen+SDScreenResource.m */,
+				94454B31171B31AC003EF64E /* NSScreen+SilicaExtension.h */,
+				94454B32171B31AC003EF64E /* NSScreen+SilicaExtension.m */,
 				94D07FB41723B16900CF44E9 /* SDApp.h */,
 				94D07FB51723B16900CF44E9 /* SDApp.m */,
 			);
@@ -684,7 +684,7 @@
 				9495B45A17197396002C9EF5 /* SDUniversalAccessHelper.m in Sources */,
 				94DAFB511719B98500526003 /* SDLogWindowController.m in Sources */,
 				94D307FD1719FF0F00D392B1 /* SDOpenAtLogin.m in Sources */,
-				94454B33171B31AC003EF64E /* NSScreen+SDScreenResource.m in Sources */,
+				94454B33171B31AC003EF64E /* NSScreen+SilicaExtension.m in Sources */,
 				94454B37171B4179003EF64E /* SDAlertWindowController.m in Sources */,
 				947E995B171CF9DE006F30AC /* SDConfigLauncher.m in Sources */,
 				94D07FB61723B16900CF44E9 /* SDApp.m in Sources */,

@@ -8,7 +8,7 @@
 
 #import "SDReference.h"
 
-#import "NSScreen+SDScreenResource.h"
+#import "NSScreen+SilicaExtension.h"
 
 @interface SDScreenRef : SDReference
 

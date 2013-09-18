@@ -12,6 +12,10 @@ def run_in_background(fn):
     t.daemon = True
     t.start()
 
+def guard_errors(obj):
+    if obj == "__api_exception__":
+        raise Exception('API Exception. (See above.)')
+
 class ZephClient(object):
     def start(self):
         try:
@@ -67,14 +71,18 @@ class ZephClient(object):
                 if infinite:
                     while True:
                         obj = temp_send_queue.get()
+                        guard_errors(obj)
                         callback(obj[1])
                 else:
                     obj = temp_send_queue.get()
+                    guard_errors(obj)
                     callback(obj[1])
             run_in_background(temp_fn)
             return None
         else:
-            return temp_send_queue.get()[1]
+            obj = temp_send_queue.get()[1]
+            guard_errors(obj)
+            return obj
 
     def dispatch_individual_messages_forever(self):
         while True:
@@ -171,6 +179,8 @@ class App(Proxy):
     def kill9(self): return self._send_sync("kill9")
 
 class Api(Proxy):
+    def undo(self): self._send_sync('undo')
+    def redo(self): self._send_sync('redo')
     def alert(self, msg, duration=None): self._send_sync('alert', msg, duration)
     def log(self, msg): self._send_sync('log', msg)
     def show_box(self, msg): self._send_sync('show_box', msg)

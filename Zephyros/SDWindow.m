@@ -10,9 +10,8 @@
 
 #import "SDApp.h"
 
+#import "NSScreen+SilicaExtension.h"
 #import "SDUniversalAccessHelper.h"
-
-#import "SDGeometry.h"
 
 @interface SDWindow ()
 
@@ -99,14 +98,17 @@
     CFTypeRef app;
     AXUIElementCopyAttributeValue([self systemWideElement], kAXFocusedApplicationAttribute, &app);
     
-    CFTypeRef win;
-    AXError result = AXUIElementCopyAttributeValue(app, (CFStringRef)NSAccessibilityFocusedWindowAttribute, &win);
-    CFRelease(app);
-    
-    if (result == kAXErrorSuccess) {
-        SDWindow* window = [[SDWindow alloc] init];
-        window.window = win;
-        return window;
+    if (app) {
+        CFTypeRef win;
+        AXError result = AXUIElementCopyAttributeValue(app, (CFStringRef)NSAccessibilityFocusedWindowAttribute, &win);
+        
+        CFRelease(app);
+        
+        if (result == kAXErrorSuccess) {
+            SDWindow* window = [[SDWindow alloc] init];
+            window.window = win;
+            return window;
+        }
     }
     
     return nil;

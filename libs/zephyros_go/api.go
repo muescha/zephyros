@@ -89,6 +89,14 @@ func HideBox() {
 	send(0, nil, false, "hide_box")
 }
 
+func Undo() {
+	send(0, nil, false, "undo")
+}
+
+func Redo() {
+	send(0, nil, false, "redo")
+}
+
 // Value keys are "alert_should_animate" (bool) and/or "alert_default_delay" (number)
 func UpdateSettings(msg map[string]interface{}) {
 	send(0, nil, false, "update_settings", msg)

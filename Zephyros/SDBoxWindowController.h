@@ -15,4 +15,7 @@
 - (void) showWithText:(NSString*)text;
 - (void) hide;
 
+- (void) setFontSize:(CGFloat)fontSize;
+- (void) setFontName:(NSString*)fontName;
+
 @end

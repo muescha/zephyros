@@ -29,9 +29,11 @@
 }
 
 - (void) screensChanged:(NSNotification*)note {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-    self.deathCallback();
-    self.deathCallback = nil;
+    @synchronized(self) {
+        [[NSNotificationCenter defaultCenter] removeObserver:self];
+        self.deathCallback();
+        self.deathCallback = nil;
+    }
 }
 
 - (id) frame_including_dock_and_menu:(NSArray*)args msgID:(id)msgID {

@@ -53,6 +53,12 @@ func init() {
 	}()
 }
 
+func guardError(obj []byte) {
+	if string(obj) == "__api_exception__" {
+		panic("API Exception. (See above.)")
+	}
+}
+
 func send(recv float64, fn func([]byte), infinite bool, method string, args ...interface{}) []byte {
 	msgid := <- msgidChan
 
@@ -67,16 +73,22 @@ func send(recv float64, fn func([]byte), infinite bool, method string, args ...i
 	if fn == nil {
 		resp := <-ch
 		delete(respChans, msgid)
+		guardError(resp)
 		return resp
 	}
 
  	go func() {
 		<-ch // ignore
 
+		wrappedFn := func(obj []byte) {
+			guardError(obj)
+			fn(obj)
+		}
+
 		if infinite {
-			for { fn(<-ch) }
+			for { wrappedFn(<-ch) }
 		} else {
-			fn(<-ch)
+			wrappedFn(<-ch)
 		}
 
 		delete(respChans, msgid)

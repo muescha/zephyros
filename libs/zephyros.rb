@@ -27,6 +27,10 @@ class Zeph
     @listen_thread.join
   end
 
+  def guard_error!(o)
+    raise 'API Exception. (See above.)' if o == "__api_exception__"
+  end
+
   def send_message(data, &blk)
     id = @id += 1
     @queues[id] = Queue.new
@@ -36,14 +40,16 @@ class Zeph
     if blk.nil?
       o = @queues[id].pop
       @queues.delete(id)
+      guard_error! o
       return o
     else
       Thread.new do
         num_future_calls = @queues[id].pop
 
         loopblk = lambda do
-          event = @queues[id].pop
-          blk.call event
+          obj = @queues[id].pop
+          guard_error! obj
+          blk.call obj
         end
 
         if num_future_calls > 0

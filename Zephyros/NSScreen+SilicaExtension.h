@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface NSScreen (SDScreenResource)
+@interface NSScreen (SilicaExtension)
 
 - (CGRect) frameIncludingDockAndMenu;
 - (CGRect) frameWithoutDockOrMenu;

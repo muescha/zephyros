@@ -82,6 +82,11 @@
 
 @implementation SDZephClient
 
+- (void) guardError:(id)obj {
+    if ([obj isEqual: @"__api_exception__"]) {
+        [NSException raise:@"API Exception. (See above.)" format:@""];
+    }
+}
 
 - (void) sendAsyncMessage:(id)msg responses:(int)responses callback:(void(^)(id obj))callback {
     uint64_t msgid = ++self.maxMsgId;
@@ -107,6 +112,7 @@
             [queue get]; // ignore first
             while (true) {
                 id obj = [queue get];
+                [self guardError:obj];
 //                NSLog(@"infinite got = %@", obj);
                 callback(obj);
             }
@@ -114,6 +120,7 @@
         else {
             for (int i = 0; i < responses; i++) {
                 id obj = [queue get];
+                [self guardError:obj];
 //                NSLog(@"once got = %@ for msg id = %@", obj, msgIdNum);
                 callback(obj);
 //                NSLog(@"done calling back got = %@ for msg id = %@", obj, msgIdNum);

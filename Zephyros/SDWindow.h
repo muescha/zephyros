@@ -9,7 +9,6 @@
 #import <Foundation/Foundation.h>
 
 #import "SDApp.h"
-#import "NSScreen+SDScreenResource.h"
 
 @interface SDWindow : NSObject
 

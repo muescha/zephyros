@@ -31,10 +31,12 @@
 }
 
 - (void) windowClosed:(NSNotification*)note {
-    if ([[[note userInfo] objectForKey:@"thing"] isEqual: self.resource]) {
-        [[NSNotificationCenter defaultCenter] removeObserver:self];
-        self.deathCallback();
-        self.deathCallback = nil;
+    @synchronized(self) {
+        if ([[[note userInfo] objectForKey:@"thing"] isEqual: self.resource]) {
+            [[NSNotificationCenter defaultCenter] removeObserver:self];
+            self.deathCallback();
+            self.deathCallback = nil;
+        }
     }
 }
 
@@ -126,14 +128,6 @@
 }
 
 - (id) focus_window:(NSArray*)args msgID:(id)msgID {
-//    SDWindow* win = [SDWindow focusedWindow];
-    
-//    SDWindowRef* thisRef = [SDWindowRef refWith:]
-    
-//    [SDWindowProxy focusedWindow]
-//    [[self withUndo] un_minimize:@[]
-//                           msgID:msgID];
-    
     return @([self.resource focusWindow]);
 }
 

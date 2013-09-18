@@ -64,6 +64,9 @@ class API
 
     def running_apps; end
 
+    def undo; end
+    def redo; end
+
     def unlisten(event); end
     def listen(event, &blk); end
         # 'window_created', callback args: (win)

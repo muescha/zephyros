@@ -69,6 +69,9 @@ property (API) api
 
 - (void) reloadConfig()
 
+- (void) undo()
+- (void) redo()
+
 - (void) require(String path) # looks at extension to know which language to use
                               # if relative path, looks in `~/.zephyros/`
 

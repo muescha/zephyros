@@ -6,6 +6,24 @@
     <description>Most recent changes with links to updates.</description>
     <language>en</language>
     <item>
+      <title>Version 5.2</title>
+      <sparkle:releaseNotesLink>https://raw.github.com/sdegutis/zephyros/master/change-log.txt</sparkle:releaseNotesLink>
+      <pubDate>Sun Sep 15 10:16:02 CDT 2013</pubDate>
+      <enclosure url="https://raw.github.com/sdegutis/zephyros/master/Builds/Zephyros-5.2.app.tar.gz" sparkle:version="5.2" sparkle:dsaSignature="MC0CFG9L0GOGLrVxu3I3YF1anDc4+9jhAhUAtvSh2qIy1J7dXh9SGAdF1UK66yY=" length="2092971" type="application/octet-stream"/>
+    </item>
+    <item>
+      <title>Version 5.1.1</title>
+      <sparkle:releaseNotesLink>https://raw.github.com/sdegutis/zephyros/master/change-log.txt</sparkle:releaseNotesLink>
+      <pubDate>Wed Sep 11 05:30:24 CDT 2013</pubDate>
+      <enclosure url="https://raw.github.com/sdegutis/zephyros/master/Builds/Zephyros-5.1.1.app.tar.gz" sparkle:version="5.1.1" sparkle:dsaSignature="MCwCFC+g4w9siN8EJtf9ZAqfJDFW37sjAhQk71WtPPrPztiUZ9cGTiRpyK3YPg==" length="2091986" type="application/octet-stream"/>
+    </item>
+    <item>
+      <title>Version 5.1</title>
+      <sparkle:releaseNotesLink>https://raw.github.com/sdegutis/zephyros/master/change-log.txt</sparkle:releaseNotesLink>
+      <pubDate>Tue Sep 10 10:15:57 CDT 2013</pubDate>
+      <enclosure url="https://raw.github.com/sdegutis/zephyros/master/Builds/Zephyros-5.1.app.tar.gz" sparkle:version="5.1" sparkle:dsaSignature="MCwCFAgB+9ZFwxv/aQefJgzEsiXCNHAgAhQ7dDOuu/d5+fLLw18MrmASm/wiuQ==" length="2091838" type="application/octet-stream"/>
+    </item>
+    <item>
       <title>Version 5.0</title>
       <sparkle:releaseNotesLink>https://raw.github.com/sdegutis/zephyros/master/change-log.txt</sparkle:releaseNotesLink>
       <pubDate>Mon Aug 26 09:47:37 CDT 2013</pubDate>

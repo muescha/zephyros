@@ -40,6 +40,26 @@
     self.window.animationBehavior = NSWindowAnimationBehaviorNone;
 }
 
+- (void) setFontName:(NSString*)fontName {
+    [self window]; // force nib to load
+    
+    [self.textField setFont:[NSFont fontWithName:fontName
+                                            size:[[self.textField font] pointSize]]];
+    
+    if ([[self window] isVisible])
+        [self showWithText:self.textField.stringValue];
+}
+
+- (void) setFontSize:(CGFloat)fontSize {
+    [self window]; // force nib to load
+    
+    [self.textField setFont:[NSFont fontWithName:[[self.textField font] fontName]
+                                            size:fontSize]];
+    
+    if ([[self window] isVisible])
+        [self showWithText:self.textField.stringValue];
+}
+
 - (void) showWithText:(NSString*)text {
     [self window]; // sigh; required cuz nib hasnt loaded yet
     

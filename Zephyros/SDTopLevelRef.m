@@ -57,12 +57,20 @@
 }
 
 - (id) undo:(NSArray*)args msgID:(id)msgID {
-    [[self.client undoManager] undo];
+    if ([[self.client undoManager] canUndo])
+        [[self.client undoManager] undo];
+    else
+        NSBeep();
+    
     return [NSNull null];
 }
 
 - (id) redo:(NSArray*)args msgID:(id)msgID {
-    [[self.client undoManager] redo];
+    if ([[self.client undoManager] canRedo])
+        [[self.client undoManager] redo];
+    else
+        NSBeep();
+    
     return [NSNull null];
 }
 
@@ -189,6 +197,18 @@
     NSNumber* defaultDuration = [settings objectForKey:@"alert_default_delay"];
     if ([defaultDuration isKindOfClass: [NSNumber self]])
         [SDAlerts sharedAlerts].alertDisappearDelay = [defaultDuration doubleValue];
+    
+    NSDisableScreenUpdates();
+    
+    NSString* boxFontName = [settings objectForKey:@"box_font_name"];
+    if ([boxFontName isKindOfClass: [NSString self]])
+        [[SDBoxWindowController sharedBox] setFontName:boxFontName];
+    
+    NSNumber* boxFontSize = [settings objectForKey:@"box_font_size"];
+    if ([boxFontSize isKindOfClass: [NSNumber self]])
+        [[SDBoxWindowController sharedBox] setFontSize:[boxFontSize doubleValue]];
+    
+    NSEnableScreenUpdates();
     
     return [NSNull null];
 }

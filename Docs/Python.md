@@ -116,7 +116,9 @@ class Api(Proxy):
     def unbind(self, key, mods)    # see note below
     def choose_from(self, lst, title, lines, chars, fn)
     def update_settings(self, s) # dict with key 'alert_should_animate' (bool) and/or 'alert_default_delay' (number)
-    def unlisten(self, event):
+    def unlisten(self, event)
+    def undo(self)
+    def redo(self)
     def listen(self, event, fn):
         def tmp_fn(obj):
             if event == "window_created":       fn(Window(obj))
